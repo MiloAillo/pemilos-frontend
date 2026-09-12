@@ -4,8 +4,6 @@ import { redirect } from "react-router-dom";
 
 const userAuthLoader = async () => {
     try {
-        console.log(`${apiUrl}/auth/me`)
-        console.log(localStorage.getItem("Authorization"))
         const res = axios.get(`${apiUrl}/auth/me`, {
             headers: {
                 "ngrok-skip-browser-warning": "true",
@@ -13,15 +11,14 @@ const userAuthLoader = async () => {
             },
         })
         const data = (await res).data
-        console.log(data.data.role)
         if (data.data.role === "admin") {
-            window.location.href = "/admin"
+            throw redirect("/admin")
         } else if(data.data.role === "voter") {
             return data.data
         } else {
-            window.location.href = "/login"
+            throw redirect("/login")
         }
-    } catch(err) {
+    } catch {
         throw redirect("/login")
     }
 }
