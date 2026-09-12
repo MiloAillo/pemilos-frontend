@@ -151,9 +151,9 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <section>
+    <section className="space-y-8">
       {/* Header Halaman */}
-      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
+      <h1 className="text-3xl font-bold tracking-tight text-white mb-8">Dashboard</h1>
 
       {/* Jam Real-time & Status Voting */}
       <DashboardHeader
@@ -164,28 +164,30 @@ const Dashboard = () => {
       />
 
       {/* Live Count Voting */}
-      <div className="flex gap-3">
-        <AdminChart titleChart="OSIS" data={count?.osis} />
-        <AdminChart titleChart="MPK" data={count?.mpk} />
-      </div>
-
-      {/* Error banner untuk live count - muncul di bawah chart */}
-      {isFetchVoteCountFailed && (
-        <div className="flex items-center gap-3 mt-4 p-4 bg-yellow-500/10 border border-yellow-200/10 rounded-lg">
-          <WifiOff className="text-yellow-600 flex-shrink-0" size={20} />
-          <p className="text-yellow-800 text-sm font-medium">
-            Gagal memuat data jumlah suara. Silakan periksa koneksi Anda.
-          </p>
-          <button
-            onClick={fetchVoteCount}
-            className="ml-auto flex items-center gap-2 px-3 py-1 text-sm bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-500 rounded transition-colors"
-            title="Coba lagi"
-          >
-            <RefreshCw size={14} />
-            Coba Lagi
-          </button>
+      <div className="space-y-4">
+        <div className="flex gap-4">
+          <AdminChart titleChart="OSIS" data={count?.osis} />
+          <AdminChart titleChart="MPK" data={count?.mpk} />
         </div>
-      )}
+
+        {/* Error banner untuk live count - muncul di bawah chart */}
+        {isFetchVoteCountFailed && (
+          <div className="flex items-center gap-4 p-5 bg-yellow-500/15 border-2 border-yellow-500/30 rounded-xl">
+            <WifiOff className="text-yellow-400 flex-shrink-0" size={24} strokeWidth={2.5} />
+            <p className="text-yellow-100 text-sm font-semibold flex-1">
+              Gagal memuat data jumlah suara. Silakan periksa koneksi Anda.
+            </p>
+            <button
+              onClick={fetchVoteCount}
+              className="flex items-center gap-2 px-4 py-2 text-sm font-bold bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300 rounded-lg transition-all duration-200 hover:scale-105 border border-yellow-500/40"
+              title="Coba lagi"
+            >
+              <RefreshCw size={16} strokeWidth={2.5} />
+              Coba Lagi
+            </button>
+          </div>
+        )}
+      </div>
 
       {/* Partisipasi Pemilih */}
       <VoterParticipation
@@ -196,9 +198,9 @@ const Dashboard = () => {
 
       {/* Warning untuk Pusher env - muncul paling bawah karena mempengaruhi semua fitur real-time */}
       {!isPusherEnvFound && (
-        <div className="flex items-center gap-3 mt-6 p-4 bg-red-500/10 border border-red-200/10 rounded-lg">
-          <TriangleAlert className="text-red-600 flex-shrink-0" size={20} />
-          <p className="text-red-800 text-sm font-medium">
+        <div className="flex items-center gap-4 p-5 bg-red-500/15 border-2 border-red-500/30 rounded-xl">
+          <TriangleAlert className="text-red-400 flex-shrink-0" size={24} strokeWidth={2.5} />
+          <p className="text-red-100 text-sm font-semibold">
             Kredensial Pusher tidak ditemukan. Pembaruan data real-time dinonaktifkan. Silakan konfigurasikan environment variables dengan benar.
           </p>
         </div>

@@ -1,5 +1,4 @@
 import { RefreshCw } from "lucide-react";
-import { Card, CardContent } from "../ui/card";
 import type { VoterStatsType } from "@/schemas/voterStats.schema";
 
 interface VoterParticipationProps {
@@ -27,53 +26,75 @@ const VoterParticipation = ({
     : 0;
 
   return (
-    <div className="my-4">
+    <div className="my-6">
       {isFetchVoterStatsFailed ? (
         // Error state
-        <div className="flex items-center gap-3 justify-center w-full text-center py-8 text-yellow-500">
-          <p className="text-sm">
+        <div className="flex items-center gap-4 justify-center w-full py-10 px-6 rounded-xl bg-yellow-500/10 border border-yellow-500/30">
+          <p className="text-base font-semibold text-yellow-400">
             Gagal memuat data partisipasi
           </p>
-          <RefreshCw className="p-1 hover:bg-gray-700 rounded transition-colors" onClick={onRetryVoterStats} size={24} />
+          <button
+            onClick={onRetryVoterStats}
+            className="p-2 hover:bg-yellow-500/20 rounded-lg transition-all duration-200 hover:scale-110"
+            title="Coba lagi"
+          >
+            <RefreshCw className="text-yellow-400" size={20} strokeWidth={2.5} />
+          </button>
         </div>
       ) : !voterStats ? (
         // Loading state
-        <div className="text-center py-8 text-gray-400">
-          <p className="text-sm">Memuat data partisipasi...</p>
+        <div className="text-center py-10 text-white/40">
+          <p className="text-base font-medium animate-pulse">Memuat data partisipasi...</p>
         </div>
       ) : (
         // Normal state: tampilkan statistik
         <>
-          {/* Progress bar dua warna */}
-          <div className="w-full h-20 flex rounded-lg overflow-hidden border border-gray-700">
-            {/* Bagian kiri: Sudah memilih (hijau) */}
+          {/* Progress bar dua warna dengan visual hierarchy yang kuat */}
+          <div className="w-full h-24 flex rounded-xl overflow-hidden border-2 border-white/10 shadow-lg">
+            {/* Bagian kiri: Sudah memilih (biru - matching chart colors) */}
             <div
-              className="bg-green-600 flex items-center justify-center px-4 text-white font-semibold transition-all duration-300"
+              className="bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center px-6 text-white transition-all duration-500 relative group"
               style={{ width: `${votedPercentage}%` }}
             >
-              {votedPercentage >= 10 &&                
-                <div className="text-center">
-                  <p className="text-sm">Sudah Memilih</p>
-                  <p className="text-lg font-bold">
-                    {voterStats.voted} ({votedPercentage}%)
+              {/* Subtle glow effect on hover */}
+              <div className="absolute inset-0 bg-sky-400/0 group-hover:bg-sky-400/10 transition-colors duration-300" />
+              
+              {votedPercentage >= 10 && (
+                <div className="text-center relative z-10">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-sky-100 mb-1">
+                    Sudah Memilih
+                  </p>
+                  <p className="text-2xl font-bold text-white drop-shadow-lg">
+                    {voterStats.voted}
+                  </p>
+                  <p className="text-sm font-bold text-sky-50 mt-0.5">
+                    ({votedPercentage}%)
                   </p>
                 </div>
-              }
+              )}
             </div>
 
-            {/* Bagian kanan: Belum memilih (abu-abu) */}
+            {/* Bagian kanan: Belum memilih (abu-abu netral) */}
             <div
-              className="bg-gray-600 flex items-center justify-center px-4 text-white font-semibold transition-all duration-300"
+              className="bg-gradient-to-br from-neutral-600/30 to-neutral-700/20 flex items-center justify-center px-6 text-white transition-all duration-500 relative group"
               style={{ width: `${notVotedPercentage}%` }}
             >
-              {notVotedPercentage >= 10 &&
-                <div className="text-center">
-                  <p className="text-sm">Belum Memilih</p>
-                  <p className="text-lg font-bold">
-                    {voterStats.notVoted} ({notVotedPercentage}%)
+              {/* Subtle glow effect on hover */}
+              <div className="absolute inset-0 bg-slate-500/0 group-hover:bg-slate-500/10 transition-colors duration-300" />
+              
+              {notVotedPercentage >= 10 && (
+                <div className="text-center relative z-10">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-slate-200 mb-1">
+                    Belum Memilih
+                  </p>
+                  <p className="text-2xl font-bold text-white drop-shadow-lg">
+                    {voterStats.notVoted}
+                    <span className="pl-1 text-sm font-bold text-slate-100 mt-0.5">
+                      ({notVotedPercentage}%)
+                    </span>
                   </p>
                 </div>
-              }
+              )}
             </div>
           </div>
         </>

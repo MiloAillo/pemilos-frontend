@@ -30,11 +30,15 @@ const AdminChart = ({
   data?: LiveCountType[];
 }) => {
   return (
-    <Card className="flex-1 flex flex-col">
-      <CardTitle className="text-center">Live Count Voting {titleChart}</CardTitle>
-      <CardContent>
+    <Card className="flex-1 flex flex-col bg-gradient-to-br from-neutral-600/30 to-neutral-700/20 border-white/10 shadow-xl">
+      <CardTitle className="text-center text-xl font-bold tracking-wide text-white/90 pt-2">
+        Live Count Voting {titleChart}
+      </CardTitle>
+      <CardContent className="flex-1">
         <Bar
           options={{
+            maintainAspectRatio: true,
+            responsive: true,
             plugins: {
               title: {
                 display: false,
@@ -45,24 +49,65 @@ const AdminChart = ({
               datalabels: {
                 anchor: "end",
                 align: "top",
-                color: "#F0F0F0",
+                color: "#FFFFFF",
                 font: {
-                  size: 14,
+                  size: 16,
                   weight: "bold",
                 },
                 formatter: (value) => value,
+                // backgroundColor: "rgba(0, 0, 0, 0.6)",
+                borderRadius: 6,
+                padding: {
+                  top: 4,
+                  bottom: 4,
+                  left: 8,
+                  right: 8,
+                },
+              },
+              tooltip: {
+                enabled: true,
+                backgroundColor: "rgba(0, 0, 0, 0.9)",
+                titleColor: "#FFFFFF",
+                bodyColor: "#E5E5E5",
+                borderColor: "rgba(255, 255, 255, 0.1)",
+                borderWidth: 1,
+                padding: 12,
+                displayColors: true,
+                titleFont: {
+                  size: 14,
+                  weight: "bold",
+                },
+                bodyFont: {
+                  size: 13,
+                },
               },
             },
             scales: {
               x: {
+                grid: {
+                  display: false,
+                },
                 ticks: {
-                  color: "#fff",
+                  color: "#E5E5E5",
+                  font: {
+                    size: 13,
+                    weight: "bold",
+                  },
+                },
+                border: {
+                  color: "rgba(255, 255, 255, 0.1)",
                 },
               },
               y: {
+                grid: {
+                  color: "rgba(255, 255, 255, 0.05)",
+                },
                 ticks: {
                   display: false,
-                  color: "#8F8F8F",
+                  color: "#A0A0A0",
+                },
+                border: {
+                  display: false,
                 },
                 grace: "5%",
               },
@@ -75,20 +120,28 @@ const AdminChart = ({
                 label: titleChart,
                 data: (data ?? []).map((res) => res.count),
                 backgroundColor: [
-                  "rgba(54, 162, 235, 0.8)",
-                  "rgba(255, 99, 132, 0.8)",
-                  "rgba(75, 192, 192, 0.8)",
-                  "rgba(153, 102, 255, 0.8)",
-                  "rgba(255, 159, 64, 0.8)",
+                  "rgba(56, 189, 248, 0.85)", // Sky blue - more vibrant
+                  "rgba(251, 113, 133, 0.85)", // Rose pink - more vibrant
+                  "rgba(52, 211, 153, 0.85)", // Emerald - more vibrant
+                  "rgba(167, 139, 250, 0.85)", // Purple - more vibrant
+                  "rgba(251, 146, 60, 0.85)", // Orange - more vibrant
                 ],
                 borderColor: [
-                  "rgba(54, 162, 235, 1)",
-                  "rgba(255, 99, 132, 1)",
-                  "rgba(75, 192, 192, 1)",
-                  "rgba(153, 102, 255, 1)",
-                  "rgba(255, 159, 64, 1)",
+                  "rgba(56, 189, 248, 1)",
+                  "rgba(251, 113, 133, 1)",
+                  "rgba(52, 211, 153, 1)",
+                  "rgba(167, 139, 250, 1)",
+                  "rgba(251, 146, 60, 1)",
                 ],
-                borderWidth: 1,
+                borderWidth: 2,
+                borderRadius: 8,
+                hoverBackgroundColor: [
+                  "rgba(56, 189, 248, 1)",
+                  "rgba(251, 113, 133, 1)",
+                  "rgba(52, 211, 153, 1)",
+                  "rgba(167, 139, 250, 1)",
+                  "rgba(251, 146, 60, 1)",
+                ],
               },
             ],
           }}
