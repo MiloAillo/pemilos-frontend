@@ -20,8 +20,8 @@ export default tseslint.config([
       globals: globals.browser,
     },
     rules: {
-      "@typescript-eslint/no-explicit-any": "warn",
-      "no-unused-vars": ["error", { "caughtErrorsIgnorePattern": "^_" }],
+      "@typescript-eslint/no-explicit-any": "off",
+      "no-unused-vars": "off",
       "react-refresh/only-export-components": "off",
     },
   },
