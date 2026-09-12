@@ -9,6 +9,7 @@ import { candidateDisplay } from "@/data/candidate";
 import { Button } from "@/components/ui/button";
 import { apiUrl } from "@/lib/api";
 import axios from "axios";
+import CurtainTransition from "@/components/CurtainTransition";
 
 const Home = () => {
   const { orgz, number } = useParams<{ orgz: string; number: string }>();
@@ -19,6 +20,12 @@ const Home = () => {
     Math.max(0, parseInt(number || "1", 10) - 1)
   );
   const candidates = candidateDisplay[orgType];
+
+  const [showCurtainOpen, setShowCurtainOpen] = useState(true);
+
+  const handleCurtainOpenDone = () => {
+    setShowCurtainOpen(false);
+  };
 
   useEffect(() => {
     setOrgType(orgz === "OSIS" ? "OSIS" : "MPK");
@@ -71,10 +78,14 @@ const Home = () => {
     }, 750);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [data.images.length]);
 
   return (
-    <div className="bg-[linear-gradient(336deg,_#46626A_-36.08%,_#242633_83.86%)] w-screen min-h-screen p-[30px] font-[Inter] text-white flex justify-center items-center text-xs md:text-sm">
+    <div className="bg-[linear-gradient(336deg,#46626A_-36.08%,#242633_83.86%)] w-screen min-h-screen p-7.5 font-[Inter] text-white flex justify-center items-center text-xs md:text-sm" style={{ backgroundColor: "#242633" }}>
+      {showCurtainOpen && (
+        <CurtainTransition mode="open" onClosed={handleCurtainOpenDone} />
+      )}
+
       <AnimatePresence mode="wait">
         <motion.div
           key={candidateIdx}

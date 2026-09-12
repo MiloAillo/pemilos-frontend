@@ -23,7 +23,7 @@ const GetToken = () => {
         );
         if (res.data.status === "success") {
           console.log(res.data);
-          let filteredData: any = [];
+          const filteredData: any = [];
           res.data.data.forEach(
             (user: { name: any; class: any; username: any; password: any }) => {
               const sanitize = (val: any) => {
