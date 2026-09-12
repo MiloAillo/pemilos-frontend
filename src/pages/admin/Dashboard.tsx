@@ -4,20 +4,31 @@ import Pusher from "pusher-js";
 import type { CountArrayType } from "@/schemas/livecount.schema";
 import axios from "axios";
 import { apiUrl } from "@/lib/api";
-import { TriangleAlert } from "lucide-react";
+import { Cable, TriangleAlert, WifiOff } from "lucide-react";
 
 const Dashboard = () => {
   const [count, setCount] = useState<CountArrayType | null>(null);
-  const [ isPusherEnvFound, setIsPusherEnvFound ] = useState<boolean>(false);
 
+  // error handling use state
+  const [ isPusherEnvFound, setIsPusherEnvFound ] = useState<boolean>(false);
+  const [ isFetchVoteCountFailed, setIsFetchVoteCountFailed ] = useState<boolean>(false);
+
+  // fetch vote count function
   const fetchData = async () => {
-    const res = await axios.get(`${apiUrl}/admin/live/count`, {
-      headers: {
-        "ngrok-skip-browser-warning": "true",
-        Authorization: `${localStorage.getItem("Authorization")}`,
-      },
-    });
-    setCount(res.data.data);
+    try {
+      const res = await axios.get(`${apiUrl}/admin/live/count`, {
+        headers: {
+          "ngrok-skip-browser-warning": "true",
+          Authorization: `${localStorage.getItem("Authorization")}`,
+        },
+      });
+
+      setCount(res.data.data);
+      setIsFetchVoteCountFailed(false);
+    } catch (error) {
+      setIsFetchVoteCountFailed(true);
+      console.error("Failed to fetch vote count:", error);
+    }
   };
 
   useEffect(() => {
@@ -67,6 +78,15 @@ const Dashboard = () => {
           <TriangleAlert className="text-red-600 flex-shrink-0" size={20} />
           <p className="text-red-800 text-sm font-medium">
             Pusher credentials not found. Real-time vote count are disabled. Please configure the environment variables properly.
+          </p>
+        </div>
+      )}
+
+      {isFetchVoteCountFailed && (
+        <div className="flex items-center gap-3 mt-6 p-4 bg-yellow-500/10 border border-yellow-200/10 rounded-lg">
+          <WifiOff className="text-yellow-600 flex-shrink-0" size={20} />
+          <p className="text-yellow-800 text-sm font-medium">
+            Failed to update the vote count data. Please check your connection.
           </p>
         </div>
       )}
