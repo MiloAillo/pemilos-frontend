@@ -66,8 +66,8 @@ const Form = () => {
     useEffect(() => setFilled(null), [osisValue, mpkValue])
 
     return (
-        <div className="relative w-screen min-h-screen font-[Inter] text-white flex justify-center overflow-x-hidden">
-            <div className={`bg-[linear-gradient(336deg,_#46626A_-36.08%,_#242633_83.86%)] relative w-screen min-h-screen font-[Inter] text-white flex justify-center`}>
+        <div className="relative w-screen min-h-screen font-sans text-white flex justify-center overflow-x-hidden">
+            <div className={`bg-[linear-gradient(336deg,_#46626A_-36.08%,_#242633_83.86%)] relative w-screen min-h-screen font-sans text-white flex justify-center`}>
                 <span className={`fixed inset-0 z-9 transition-opacity duration-500 ease-in-out backdrop-blur-md ${confirmation ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
                     <Confirmation vote={vote} setConfirmation={setConfirmation} isSent={isSent} isVoteNotAllowed={isVoteNotAllowed} isNotAuthorized={isNotAuthorized} />
                 </span>

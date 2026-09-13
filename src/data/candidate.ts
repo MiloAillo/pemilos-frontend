@@ -30,6 +30,9 @@ import Laily2 from "@/assets/Caketos 3/Laily-osis-2.png";
 import Laily3 from "@/assets/Caketos 3/Laily-osis-3.png";
 import type { DetailsType } from "@/schemas/details.schema";
 
+import GenericBackground from "@/assets/CalonBack.png";
+
+
 export const candidateDisplay = {
   MPK: [
     {
@@ -73,7 +76,7 @@ export const MPK01Details: DetailsType = {
   quote: "Bersama 01, melangkah maju",
   name: "Alden Fathin Hanif",
 
-  background: BackgroundMPK01,
+  background: GenericBackground,
   images: [Alden1, Alden2, Alden3],
 
   vision:
@@ -98,7 +101,7 @@ export const MPK02Details: DetailsType = {
   organization: "MPK",
   name: "Seva Adinda Purwadani",
 
-  background: BackgroundMPK02,
+  background: GenericBackground,
   images: [Seva1, Seva2, Seva3],
 
   vision:
@@ -122,7 +125,7 @@ export const MPK03Details: DetailsType = {
   organization: "MPK",
   name: "Attaya Sahasika Arif",
 
-  background: BackgroundMPK03,
+  background: GenericBackground,
   images: [Attaya1, Attaya2, Attaya3],
 
   vision:
@@ -147,7 +150,7 @@ export const OSIS01Details: DetailsType = {
   organization: "OSIS",
   name: "Rafif Firza Putra",
 
-  background: BackgroundOSIS01,
+  background: GenericBackground,
   images: [Rafif1, Rafif2, Rafif3],
 
   vision:
@@ -173,7 +176,7 @@ export const OSIS02Details: DetailsType = {
   organization: "OSIS",
   name: "Zahra Rizky Megasaputri",
 
-  background: BackgroundOSIS02,
+  background: GenericBackground,
   images: [Zahra1, Zahra2, Zahra3],
 
   vision:
@@ -197,7 +200,7 @@ export const OSIS03Details: DetailsType = {
   organization: "OSIS",
   name: "Laily Artika Azkianingrum",
 
-  background: BackgroundOSIS03,
+  background: GenericBackground,
   images: [Laily1, Laily2, Laily3],
 
   vision:
@@ -217,4 +220,13 @@ export const OSIS03Details: DetailsType = {
     "Mading kreatif, Menjadi wadah bagi Siswa-siswi SMKN 8 Semarang untuk menyalurkan informasi, ide, dan kreativitas",
     "Study Banding untuk Menambah wawasan dan pengalaman baru melalui pertukaran ide organisasi dengan sekolah lain",
   ],
+};
+
+export const detailsMap = {
+  "MPK-1": MPK01Details,
+  "MPK-2": MPK02Details,
+  "MPK-3": MPK03Details,
+  "OSIS-1": OSIS01Details,
+  "OSIS-2": OSIS02Details,
+  "OSIS-3": OSIS03Details,
 };

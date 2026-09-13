@@ -52,7 +52,7 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-[linear-gradient(336deg,#46626A_-36.08%,#242633_83.86%)] w-screen h-screen p-7.5 font-[Inter] text-white flex items-center justify-center" style={{ backgroundColor: "#242633" }}>
+    <div className="bg-[linear-gradient(336deg,#46626A_-36.08%,#242633_83.86%)] w-screen h-screen p-7.5 font-sans text-white flex items-center justify-center" style={{ backgroundColor: "#242633" }}>
       {isClosing && (
         <CurtainTransition
           mode="close"
@@ -108,7 +108,7 @@ const Login = () => {
                       className="w-full h-9 border rounded-sm bg-[#0000000a] px-2"
                     />
                   </div>
-                  <p className="font-[Inter] font-bold text-xl">:</p>
+                  <p className="font-sans font-bold text-xl">:</p>
                   <div>
                     <input
                       readOnly
