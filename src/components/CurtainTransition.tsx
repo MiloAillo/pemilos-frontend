@@ -129,7 +129,7 @@ export default function CurtainTransition({
           style={{
             zIndex: 1,
             background:
-              "linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.5) 50%, transparent 100%)",
+              "linear-gradient(90deg, transparent 0%, rgba(42,26,10,0.5) 50%, transparent 100%)",
           }}
         />
         <motion.div
@@ -182,7 +182,7 @@ export default function CurtainTransition({
     <div className="fixed inset-0 z-50 pointer-events-none" aria-hidden>
       <motion.div
         className="absolute inset-0"
-        style={{ background: "#242633" }}
+          style={{ background: "#2a1a0a" }}
         initial={{ opacity: 1 }}
         animate={{ opacity: 0 }}
         transition={sharedTransition}

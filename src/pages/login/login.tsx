@@ -23,7 +23,8 @@ const Login = () => {
     setIsVoted(false);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e?: React.FormEvent) => {
+    e?.preventDefault();
     if (!usernameRef.current?.value || !tokenRef.current?.value) {
       setIsNotFilled(true);
       return;
@@ -52,7 +53,7 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-[linear-gradient(336deg,#46626A_-36.08%,#242633_83.86%)] w-screen h-screen p-7.5 font-sans text-white flex items-center justify-center" style={{ backgroundColor: "#242633" }}>
+    <div className="bg-[linear-gradient(336deg,#46626A_-36.08%,#242633_83.86%)] w-screen h-screen p-7.5 font-sans text-white flex items-center justify-center" style={{ backgroundColor: "#2a1a0a" }}>
       {isClosing && (
         <CurtainTransition
           mode="close"
@@ -72,7 +73,7 @@ const Login = () => {
         />
       )}
       <div className="w-full max-w-150 h-96.75 border rounded-2xl flex items-center flex-col text-center px-10 py-8 bg-[#ffffff0a] backdrop-blur-2xl">
-        <div className="w-full h-full flex flex-col justify-between">
+        <form onSubmit={handleSubmit} className="w-full h-full flex flex-col justify-between">
           <div className="w-full h-full flex flex-col gap-5">
             <div>
               <p className="font-bold font text-2xl">Login</p>
@@ -147,14 +148,14 @@ const Login = () => {
               ""
             )}
             <button
-              onClick={handleSubmit}
+              type="submit"
               disabled={isClosing}
               className="w-full h-9 bg-white rounded-sm text-black font-semibold"
             >
               Login
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

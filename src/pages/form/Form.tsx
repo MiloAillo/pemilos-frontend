@@ -1,126 +1,273 @@
-import Confirmation from "@/components/FormConfirmation"
-import MpkCard from "@/components/mpkCard"
-import OsisCard from "@/components/OsisCard"
-import { apiUrl } from "@/lib/api"
-import axios, { isAxiosError } from "axios"
-import { useEffect, useState } from "react"
-import { useLoaderData } from "react-router-dom"
+import Confirmation, {
+  type SelectedCandidate,
+} from "@/components/FormConfirmation";
+import MpkCard, { mpkImage } from "@/components/mpkCard";
+import OsisCard, { osisImage } from "@/components/OsisCard";
+import ParallaxBackground from "@/components/ParallaxBackground";
+import { voteSummary } from "@/data/voteSummary";
+import { apiUrl } from "@/lib/api";
+import axios, { isAxiosError } from "axios";
+import { BadgeCheck, TriangleAlert } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
-const Form = () => {
-    const data = useLoaderData()
-
-    const [osisValue, setOsisValue] = useState<any>(null) // isinya id, buat styling sama fetch
-    const [mpkValue, setMpkValue] = useState<any>(null) // isinya id, buat styling sama fetch
-    const [filled, setFilled] = useState<boolean | null>(null)
-    const [currentFill, setCurrentFill] = useState<"OSIS" | "MPK" | null>(null) // dynamic styling
-    const [confirmation, setConfirmation] = useState<boolean>(false)
-    const [isSent, setIsSent] = useState<boolean>(false)
-    const [isVoteNotAllowed, setIsVoteNotAllowed] = useState<boolean>(false)
-    const [isNotAuthorized, setIsNotAuthorized] = useState<boolean>(false)
-
-    const osisVoteHandler = (id: any): void => {
-        setOsisValue(id)
-        setCurrentFill("OSIS")
-    }
-
-    const mpkVoteHandler = (id: any): void => {
-        setMpkValue(id)
-        setCurrentFill("MPK")
-    }
-
-    const vote = async () => {
-        console.log(`${apiUrl}/vote`)
-        console.log({
-                "osis": osisValue,
-                "mpk": mpkValue,
-                "Authorization": localStorage.getItem("Authorization")
-        })
-
-        if(!localStorage.getItem("Authorization")) window.location.href = "/"
-        if(!osisValue || !mpkValue) {setFilled(false); setConfirmation(false); return}
-        try {
-            setIsSent(true)
-            const res = await axios.post(`${apiUrl}/vote`, {
-                "osis": osisValue,
-                "mpk": mpkValue
-            }, {
-                headers: {
-                    "ngrok-skip-browser-warning": "true",
-                    Authorization: `${localStorage.getItem("Authorization")}`
-                }
-            })
-            console.log(res)
-        } catch(err) {
-            console.log(err)
-            if(isAxiosError(err)) {
-                if(err.response?.status === 401) setIsVoteNotAllowed(true)
-                if(err.response?.status === 400) setIsNotAuthorized(true)
-                setIsSent(false)
-            }
-        }
-
-        localStorage.removeItem("Authorization")
-        window.location.href = "/login"
-    }
-
-    useEffect(() => setFilled(null), [osisValue, mpkValue])
-
-    return (
-        <div className="relative w-screen min-h-screen font-sans text-white flex justify-center overflow-x-hidden">
-            <div className={`bg-[linear-gradient(336deg,_#46626A_-36.08%,_#242633_83.86%)] relative w-screen min-h-screen font-sans text-white flex justify-center`}>
-                <span className={`fixed inset-0 z-9 transition-opacity duration-500 ease-in-out backdrop-blur-md ${confirmation ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
-                    <Confirmation vote={vote} setConfirmation={setConfirmation} isSent={isSent} isVoteNotAllowed={isVoteNotAllowed} isNotAuthorized={isNotAuthorized} />
-                </span>
-                <div className="w-150 lg:w-240 py-5 px-5 flex flex-col gap-10 z-1">
-                    <div>
-                        <div className="text-center">
-                            <p className="font-bold text-5xl bg-[white] bg-clip-text text-transparent">Vote</p>
-                            <p className="font-medium text-md tracking-wider">Pilih Kandidatmu</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-col lg:flex-row gap-10">
-                        <div className="flex flex-col gap-2">
-                            <div className="font-bold text-3xl bg-[linear-gradient(224deg,_#E58C8C_-14.26%,_#A47272_140.15%)] bg-clip-text text-transparent">MPK</div>
-                            <div className="grid grid-cols-2 gap-5 w-full">
-                            {data?.[0]?.mpkData?.map((candidate: any) => (
-                                <MpkCard
-                                    id={candidate._id}
-                                    name={candidate.name}
-                                    number={candidate.number}
-                                    mpkVoteHandler={mpkVoteHandler}
-                                    mpkValue={mpkValue}
-                                />
-                            ))}
-                            </div>
-                        </div>
-                        <div className="flex flex-col gap-2">
-                            <div className="font-bold text-3xl bg-[linear-gradient(224deg,_#82B9C8_-14.26%,_#648F9A_140.15%)] bg-clip-text text-transparent">OSIS</div>
-                            <div className="grid grid-cols-2 gap-5 w-full">
-                                {data?.[0]?.osisData?.map((candidate: any) => (
-                                <OsisCard
-                                    key={candidate._id}
-                                    id={candidate._id}
-                                    name={candidate.name}
-                                    number={candidate.number}
-                                    osisVoteHandler={osisVoteHandler}
-                                    osisValue={osisValue}
-                                />
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                        <p className={`${filled === false ? "" : "hidden "}text-[#dee2fa] px-2`}><span className="text-red-400">{"[ ! ]"}</span> Pilih kandidat terlebih dahulu</p>
-                        <button disabled={!osisValue || !mpkValue} onClick={() => { setConfirmation(true) }}className={`w-full bg-[linear-gradient(180deg,_#AFB3D0_0%,_#808080_134%)] text-black h-12 font-bold text-xl rounded-lg transition transform ease-in active:scale-99 ${!osisValue || !mpkValue ? "opacity-25" : "opacity-100"}`}>Kirim</button>
-                    </div>
-                </div>
-                <div className={`absolute w-50 h-full bg-[linear-gradient(270deg,_rgba(0,0,0,0.00)_30%,_#AA5D5D_700.11%)] left-0 transition transform ease-out duration-500 ${currentFill === "MPK" ? "opacity-100" : "opacity-0"}`}></div>
-                <div className={`absolute w-50 h-full bg-[linear-gradient(90deg,_rgba(0,0,0,0.00)_30%,_#AA5D5D_700.11%)] right-0 transition transform ease-out duration-500 ${currentFill === "MPK" ? "opacity-100" : "opacity-0"}`}></div>
-                <div className={`absolute w-50 h-full bg-[linear-gradient(270deg,_rgba(0,0,0,0.00)_30%,_rgba(93,167,170,0.74)_700.11%)] left-0 transition transform ease-out duration-500 ${currentFill === "OSIS" ? "opacity-100" : "opacity-0"}`}></div>
-                <div className={`absolute w-50 h-full bg-[linear-gradient(90deg,_rgba(0,0,0,0.00)_30%,_rgba(93,167,170,0.74)_700.11%)] right-0 transition transform ease-out duration-500 ${currentFill === "OSIS" ? "opacity-100" : "opacity-0"}`}></div>
-            </div>
-        </div>
-    )
+interface LoaderCandidate {
+  _id: string;
+  name: string;
+  number: number;
+  label: string;
 }
 
-export default Form
+const Form = () => {
+  const navigate = useNavigate();
+  const data = useLoaderData() as
+    | Array<{ mpkData: LoaderCandidate[]; osisData: LoaderCandidate[] }>
+    | undefined;
+
+  const [osisValue, setOsisValue] = useState<string | null>(null);
+  const [mpkValue, setMpkValue] = useState<string | null>(null);
+  const [filled, setFilled] = useState<boolean | null>(null);
+  const [confirmation, setConfirmation] = useState<boolean>(false);
+  const [isSent, setIsSent] = useState<boolean>(false);
+  const [isVoteNotAllowed, setIsVoteNotAllowed] = useState<boolean>(false);
+  const [isNotAuthorized, setIsNotAuthorized] = useState<boolean>(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<boolean>(false);
+
+  const mpkData = data?.[0]?.mpkData ?? [];
+  const osisData = data?.[0]?.osisData ?? [];
+
+  const toSelected = (
+    list: LoaderCandidate[],
+    id: string | null,
+    org: "OSIS" | "MPK"
+  ): SelectedCandidate | null => {
+    const found = list.find((c) => c._id === id);
+    if (!found) return null;
+    return {
+      org,
+      name: found.name,
+      number: found.number,
+      image:
+        org === "OSIS" ? osisImage(found.number) : mpkImage(found.number),
+      summary: voteSummary[`${org}-${found.number}`] ?? "",
+    };
+  };
+
+  const selectedOsis = toSelected(osisData, osisValue, "OSIS");
+  const selectedMpk = toSelected(mpkData, mpkValue, "MPK");
+
+  const step: 1 | 2 | 3 = success ? 3 : confirmation ? 2 : 1;
+
+  const vote = async () => {
+    if (!localStorage.getItem("Authorization")) {
+      navigate("/");
+      return;
+    }
+    if (!osisValue || !mpkValue) {
+      setFilled(false);
+      setConfirmation(false);
+      return;
+    }
+    setIsVoteNotAllowed(false);
+    setIsNotAuthorized(false);
+    setSubmitError(null);
+    try {
+      setIsSent(true);
+      await axios.post(
+        `${apiUrl}/vote`,
+        {
+          osis: osisValue,
+          mpk: mpkValue,
+        },
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+            Authorization: `${localStorage.getItem("Authorization")}`,
+          },
+        }
+      );
+      localStorage.removeItem("Authorization");
+      setIsSent(false);
+      setConfirmation(false);
+      setSuccess(true);
+    } catch (err) {
+      setIsSent(false);
+      if (isAxiosError(err)) {
+        if (err.response?.status === 401) setIsVoteNotAllowed(true);
+        else if (err.response?.status === 400) setIsNotAuthorized(true);
+        else setSubmitError("Gagal mengirim suara. Periksa koneksi lalu coba lagi.");
+      } else {
+        setSubmitError("Gagal mengirim suara. Periksa koneksi lalu coba lagi.");
+      }
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("Authorization");
+    navigate("/login");
+  };
+
+  useEffect(() => {
+    setFilled(null);
+    setSubmitError(null);
+  }, [osisValue, mpkValue]);
+
+  return (
+    <div className="relative w-screen min-h-screen font-sans text-white flex justify-center">
+      <ParallaxBackground className="h-screen w-screen fixed -z-10" />
+      <div className="fixed top-0 left-0 right-0 z-30 bg-amber-950/30 backdrop-blur-xl border-b border-amber-200/10 rounded-b-4xl flex justify-center">
+        <div className="w-full max-w-6xl px-5 py-4 flex flex-col items-center gap-3">
+          <p className="text-xs uppercase font-bodoni text-amber-100/60 tracking-[0.25rem]">
+            Pemilos &bull; AKSA
+          </p>
+          <p className="font-bodoni font-black text-4xl md:text-5xl uppercase text-amber-100">
+            Pilih Maestromu
+          </p>
+          <hr className="w-24 border-amber-200/30" />
+          <ol className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest">
+            {["Pilih", "Konfirmasi", "Selesai"].map((label, i) => {
+              const n = (i + 1) as 1 | 2 | 3;
+              const active = step === n;
+              const done = step > n;
+              return (
+                <li key={label} className="flex items-center gap-2">
+                  <span
+                    className={`flex items-center justify-center w-7 h-7 rounded-full border ${
+                      active
+                        ? "bg-amber-200 text-amber-950 border-amber-200"
+                        : done
+                          ? "bg-amber-200/20 text-amber-100 border-amber-200/40"
+                          : "text-white/40 border-white/20"
+                    }`}
+                  >
+                    {n}
+                  </span>
+                  <span
+                    className={active ? "text-amber-100" : "text-white/40"}
+                  >
+                    {label}
+                  </span>
+                  {i < 2 && <span className="text-white/25 mx-1">/</span>}
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      </div>
+      <div className="relative z-10 w-full max-w-6xl px-5 pt-48 pb-10 flex flex-col gap-10">
+        {confirmation && (
+          <Confirmation
+            osis={selectedOsis}
+            mpk={selectedMpk}
+            vote={vote}
+            setConfirmation={setConfirmation}
+            isSent={isSent}
+            isVoteNotAllowed={isVoteNotAllowed}
+            isNotAuthorized={isNotAuthorized}
+            submitError={submitError}
+          />
+        )}
+
+        {success && (
+          <div className="fixed inset-0 bg-black/70 z-40 flex justify-center items-center p-5">
+            <div className="bg-[#1c1f2b] w-full max-w-lg p-6 rounded-2xl border border-amber-200/25 flex flex-col items-center text-center gap-5 shadow-2xl">
+              <span className="flex items-center justify-center w-24 h-24 rounded-full bg-amber-300/15 border-2 border-amber-300">
+                <BadgeCheck
+                  size={52}
+                  className="text-amber-300"
+                  strokeWidth={2}
+                />
+              </span>
+              <p className="font-bodoni font-black text-4xl uppercase text-amber-100">
+                Suaramu Tercatat
+              </p>
+              <hr className="w-24 border-amber-200/30" />
+              <p className="text-white/75 max-w-md">
+                Terima kasih telah berpartisipasi dalam Pemilos AKSA. Satu suara
+                darimu menentukan nahkoda OSIS dan MPK berikutnya.
+              </p>
+              <button
+                onClick={handleLogout}
+                className="mt-2 px-10 py-3 rounded-full font-bodoni font-bold uppercase tracking-widest bg-amber-200 text-amber-950 hover:bg-amber-100 transition"
+              >
+                Keluar
+              </button>
+            </div>
+          </div>
+        )}
+
+        <div className="flex flex-col gap-12">
+          <section className="flex flex-col gap-4">
+            <h2 className="font-bodoni font-black text-3xl uppercase text-amber-200">
+              OSIS
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 w-full">
+              {osisData.map((candidate) => (
+                <OsisCard
+                  key={candidate._id}
+                  id={candidate._id}
+                  name={candidate.name}
+                  number={candidate.number}
+                  osisVoteHandler={setOsisValue}
+                  osisValue={osisValue}
+                />
+              ))}
+            </div>
+          </section>
+
+          <section className="flex flex-col gap-4">
+            <h2 className="font-bodoni font-black text-3xl uppercase text-amber-200">
+              MPK
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 w-full">
+              {mpkData.map((candidate) => (
+                <MpkCard
+                  key={candidate._id}
+                  id={candidate._id}
+                  name={candidate.name}
+                  number={candidate.number}
+                  mpkVoteHandler={setMpkValue}
+                  mpkValue={mpkValue}
+                />
+              ))}
+            </div>
+          </section>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          {filled === false && (
+            <div
+              role="alert"
+              className="flex items-center gap-3 rounded-xl border-2 border-red-500/60 bg-red-500/15 p-4"
+            >
+              <TriangleAlert
+                className="text-red-400 shrink-0"
+                size={22}
+                strokeWidth={2.5}
+              />
+              <p className="text-sm font-bold text-red-100">
+                Pilih satu kandidat MPK dan satu kandidat OSIS terlebih dahulu.
+              </p>
+            </div>
+          )}
+          <button
+            disabled={!osisValue || !mpkValue}
+            onClick={() => {
+              setConfirmation(true);
+            }}
+            className={`w-full h-12 font-bodoni font-bold uppercase tracking-widest text-xl rounded-full transition ${
+              !osisValue || !mpkValue
+                ? "bg-amber-200/25 text-amber-100/40 cursor-not-allowed"
+                : "bg-amber-200 text-amber-950 hover:bg-amber-100"
+            }`}
+          >
+            Kirim
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Form;
