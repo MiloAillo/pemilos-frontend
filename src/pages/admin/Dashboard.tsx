@@ -7,9 +7,14 @@ import type { CountArrayType } from "@/schemas/livecount.schema";
 import type { VoterStatsType } from "@/schemas/voterStats.schema";
 import axios from "axios";
 import { apiUrl } from "@/lib/api";
-import { RefreshCw, TriangleAlert, WifiOff } from "lucide-react";
+import { RefreshCw, TriangleAlert, WifiOff, Maximize2, Minimize2 } from "lucide-react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const isFullscreen = searchParams.get('fullscreen') === 'true';
+
   // State untuk data live count (jumlah suara per kandidat)
   const [count, setCount] = useState<CountArrayType | null>(null);
 
@@ -150,10 +155,44 @@ const Dashboard = () => {
     };
   }, []);
 
+  // ESC key listener untuk keluar dari fullscreen
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isFullscreen) {
+        navigate('/admin');
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [isFullscreen, navigate]);
+
+  const toggleFullscreen = () => {
+    if (isFullscreen) {
+      navigate('/admin');
+    } else {
+      navigate('/admin?fullscreen=true');
+    }
+  };
+
   return (
-    <section className="space-y-8">
-      {/* Header Halaman */}
-      <h1 className="text-3xl font-bold tracking-tight text-white mb-8">Dashboard</h1>
+    <section className="space-y-8 relative">
+      {/* Header Halaman - hidden in fullscreen */}
+      {!isFullscreen && (
+        <h1 className="text-3xl font-bold tracking-tight text-white mb-8">Dashboard</h1>
+      )}
+
+      {/* Floating Fullscreen Button */}
+      <button
+        onClick={toggleFullscreen}
+        className="fixed bottom-0 right-8 z-50 p-4 bg-sky-500/20 hover:bg-sky-600/20 border-sky-100/10 border-2 backdrop-blur-[10px] text-white rounded-full shadow-2xl transition-all duration-200 hover:scale-110 active:scale-95"
+        title={isFullscreen ? "Keluar Fullscreen (ESC)" : "Masuk Fullscreen"}
+      >
+        {isFullscreen ? (
+          <Minimize2 size={24} strokeWidth={2.5} />
+        ) : (
+          <Maximize2 size={24} strokeWidth={2.5} />
+        )}
+      </button>
 
       {/* Jam Real-time & Status Voting */}
       <DashboardHeader
@@ -166,8 +205,16 @@ const Dashboard = () => {
       {/* Live Count Voting */}
       <div className="space-y-4">
         <div className="flex gap-4">
-          <AdminChart titleChart="OSIS" data={count?.osis} />
-          <AdminChart titleChart="MPK" data={count?.mpk} />
+          <AdminChart 
+            key={`osis-${isFullscreen}`}
+            titleChart="OSIS" 
+            data={count?.osis} 
+          />
+          <AdminChart 
+            key={`mpk-${isFullscreen}`}
+            titleChart="MPK" 
+            data={count?.mpk} 
+          />
         </div>
 
         {/* Error banner untuk live count - muncul di bawah chart */}

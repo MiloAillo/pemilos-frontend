@@ -62,7 +62,7 @@ const DashboardHeader = ({
         </span>
       ) : (
         // Normal state: tampilkan status voting
-        <div className={`flex items-center gap-3 px-5 py-2.5 rounded-lg border-2 ${
+        <div className={`flex items-center gap-3 px-5 py-2.5 rounded-lg border-2 transition-all duration-500 ${
           voteStatus 
             ? "bg-emerald-500/10 border-emerald-500/35" 
             : "bg-red-500/10 border-red-500/35"
