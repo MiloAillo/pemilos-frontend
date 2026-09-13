@@ -3,7 +3,7 @@ import { columns } from "@/components/admin/AdminTabel";
 import { DataTable } from "@/components/DataTable";
 import { Button } from "@/components/ui/button";
 import type { UserType } from "@/schemas/user.schema";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { PaginationState } from "@tanstack/react-table";
 import { apiUrl } from "@/lib/api";
 import axios from "axios";
@@ -23,7 +23,7 @@ const User = () => {
     setPage((prev) => ({ ...prev, pageIndex: 0 }));
   }, [search, filter]);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const response = await axios.get(
@@ -43,11 +43,11 @@ const User = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [search, filter, page.pageIndex]);
 
   useEffect(() => {
     fetchData();
-  }, [page.pageIndex, search, filter]);
+  }, [fetchData]);
 
   const memoizedColumns = useMemo(() => columns(fetchData), [fetchData]);
 

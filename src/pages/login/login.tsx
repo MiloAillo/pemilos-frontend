@@ -1,17 +1,21 @@
 import { useRef, useState } from "react";
 import axios, { isAxiosError } from "axios";
 import { apiUrl } from "@/lib/api";
+import CurtainTransition from "@/components/CurtainTransition";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const usernameRef = useRef<HTMLInputElement | null>(null); // username: string / null
-  const tokenRef = useRef<HTMLInputElement | null>(null); // token: number / null
+  const navigate = useNavigate();
+  const usernameRef = useRef<HTMLInputElement | null>(null);
+  const tokenRef = useRef<HTMLInputElement | null>(null);
 
-  // buat warning text
   const [isCredentialWrong, setIsCredentialWrong] = useState<boolean>(false);
   const [isNotFilled, setIsNotFilled] = useState<boolean>(false);
   const [isVoted, setIsVoted] = useState<boolean>(false);
 
   const [username, setUsername] = useState<string>("");
+  const [isClosing, setIsClosing] = useState<boolean>(false);
+  const [token, setToken] = useState<string>("");
 
   const removeWarning = () => {
     setIsCredentialWrong(false);
@@ -25,16 +29,16 @@ const Login = () => {
       return;
     }
     try {
-      console.log({
-        username: usernameRef.current?.value,
-        password: `${tokenRef.current?.value}:${usernameRef.current?.value}`,
-      });
       const response = await axios.post(`${apiUrl}/auth/login`, {
         username: usernameRef.current?.value,
         password: `${tokenRef.current?.value}:${usernameRef.current?.value}`,
       });
-      localStorage.setItem("Authorization", response.data["token"]);
-      if (response.data.status === "sucess") window.location.href = "/";
+      const jwt = response.data["token"];
+      localStorage.setItem("Authorization", jwt);
+      if (response.data.status === "sucess") {
+        setToken(jwt);
+        setIsClosing(true);
+      }
     } catch (err) {
       if (isAxiosError(err)) {
         if (err.response?.status == 401) {
@@ -48,8 +52,26 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-[linear-gradient(336deg,_#46626A_-36.08%,_#242633_83.86%)] w-screen h-screen p-[30px] font-[Inter] text-white flex items-center justify-center">
-      <div className="w-full max-w-[600px] h-[387px] border-1 rounded-2xl flex items-center flex-col text-center px-10 py-8 bg-[#ffffff0a] backdrop-blur-2xl">
+    <div className="bg-[linear-gradient(336deg,#46626A_-36.08%,#242633_83.86%)] w-screen h-screen p-7.5 font-[Inter] text-white flex items-center justify-center" style={{ backgroundColor: "#242633" }}>
+      {isClosing && (
+        <CurtainTransition
+          mode="close"
+          onClosed={() => {
+            try {
+              const payload = JSON.parse(atob(token.split(".")[1]));
+              const role = payload.role;
+              if (role === "admin") {
+                navigate("/admin", { replace: true });
+              } else {
+                navigate("/", { replace: true });
+              }
+            } catch {
+              navigate("/", { replace: true });
+            }
+          }}
+        />
+      )}
+      <div className="w-full max-w-150 h-96.75 border rounded-2xl flex items-center flex-col text-center px-10 py-8 bg-[#ffffff0a] backdrop-blur-2xl">
         <div className="w-full h-full flex flex-col justify-between">
           <div className="w-full h-full flex flex-col gap-5">
             <div>
@@ -70,7 +92,7 @@ const Login = () => {
                   type="text"
                   name="username"
                   id="username"
-                  className="w-full h-9 border-1 rounded-sm bg-[#0000000a] px-2"
+                  className="w-full h-9 border rounded-sm bg-[#0000000a] px-2"
                 />
               </div>
               <div className="flex flex-col justify-start items-start">
@@ -83,7 +105,7 @@ const Login = () => {
                       type="text"
                       name="password"
                       id="password"
-                      className="w-full h-9 border-1 rounded-sm bg-[#0000000a] px-2"
+                      className="w-full h-9 border rounded-sm bg-[#0000000a] px-2"
                     />
                   </div>
                   <p className="font-[Inter] font-bold text-xl">:</p>
@@ -95,7 +117,7 @@ const Login = () => {
                       type="text"
                       name="password"
                       id="password"
-                      className="text-[#ffffff] w-full h-9 border-1 rounded-sm bg-[#0000000a] px-2"
+                      className="text-[#ffffff] w-full h-9 border rounded-sm bg-[#0000000a] px-2"
                     />
                   </div>
                 </div>
@@ -126,6 +148,7 @@ const Login = () => {
             )}
             <button
               onClick={handleSubmit}
+              disabled={isClosing}
               className="w-full h-9 bg-white rounded-sm text-black font-semibold"
             >
               Login

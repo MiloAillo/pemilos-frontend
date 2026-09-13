@@ -4,7 +4,7 @@ import { apiUrl } from "@/lib/api";
 import type { IsVotedType, UserType } from "@/schemas/user.schema";
 import type { PaginationState } from "@tanstack/react-table";
 import axios from "axios";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 const Vote = () => {
   const [userData, setUserData] = useState<UserType[]>([]);
@@ -19,7 +19,7 @@ const Vote = () => {
   const [votedData, setVotedData] = useState<IsVotedType[]>([]);
   const role = filter === "ADMIN" ? "admin" : "voter";
 
-  const fetchData = async () => {
+const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const response = await axios.get(
@@ -47,15 +47,15 @@ const Vote = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  useEffect(() => {
-    setPage((prev) => ({ ...prev, pageIndex: 0 }));
-  }, [search, filter, voted]);
+  }, [voted, search, filter, page.pageIndex]);
 
   useEffect(() => {
     fetchData();
-  }, [page.pageIndex, search, filter, voted]);
+  }, [fetchData]);
+
+  useEffect(() => {
+    setPage((prev) => ({ ...prev, pageIndex: 0 }));
+  }, [fetchData]);
 
   const memoizedColumns = useMemo(() => columns(fetchData), [fetchData]);
 
