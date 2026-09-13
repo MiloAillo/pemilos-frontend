@@ -1,4 +1,5 @@
 import { RefreshCw } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import type { VoterStatsType } from "@/schemas/voterStats.schema";
 
 interface VoterParticipationProps {
@@ -17,6 +18,11 @@ const VoterParticipation = ({
   isFetchVoterStatsFailed,
   onRetryVoterStats,
 }: VoterParticipationProps) => {
+  const votedRef = useRef<HTMLDivElement>(null);
+  const notVotedRef = useRef<HTMLDivElement>(null);
+  const [showVotedText, setShowVotedText] = useState(false);
+  const [showNotVotedText, setShowNotVotedText] = useState(false);
+
   // Hitung persentase untuk progress bar
   const votedPercentage = voterStats
     ? Math.round((voterStats.voted / voterStats.total) * 100)
@@ -24,6 +30,35 @@ const VoterParticipation = ({
   const notVotedPercentage = voterStats
     ? Math.round((voterStats.notVoted / voterStats.total) * 100)
     : 0;
+
+  useEffect(() => {
+    const checkTextFit = () => {
+      if (votedRef.current) {
+        const textContainer = votedRef.current.querySelector('[data-text-content]');
+        if (textContainer) {
+          const containerWidth = votedRef.current.clientWidth;
+          const textWidth = (textContainer as HTMLElement).scrollWidth;
+          const SAFETY_MARGIN = 20;
+          setShowVotedText(textWidth + SAFETY_MARGIN <= containerWidth);
+        }
+      }
+
+      if (notVotedRef.current) {
+        const textContainer = notVotedRef.current.querySelector('[data-text-content]');
+        if (textContainer) {
+          const containerWidth = notVotedRef.current.clientWidth;
+          const textWidth = (textContainer as HTMLElement).scrollWidth;
+          const SAFETY_MARGIN = 20;
+          setShowNotVotedText(textWidth + SAFETY_MARGIN <= containerWidth);
+        }
+      }
+    };
+
+    checkTextFit();
+
+    window.addEventListener('resize', checkTextFit);
+    return () => window.removeEventListener('resize', checkTextFit);
+  }, [voterStats]);
 
   return (
     <div className="my-6">
@@ -53,48 +88,56 @@ const VoterParticipation = ({
           <div className="w-full h-24 flex rounded-xl overflow-hidden border-2 border-white/10 shadow-lg">
             {/* Bagian kiri: Sudah memilih (biru - matching chart colors) */}
             <div
+              ref={votedRef}
               className="bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center px-6 text-white transition-all duration-500 relative group"
               style={{ width: `${votedPercentage}%` }}
             >
               {/* Subtle glow effect on hover */}
               <div className="absolute inset-0 bg-sky-400/0 group-hover:bg-sky-400/10 transition-colors duration-300" />
               
-              {votedPercentage >= 10 && (
-                <div className="text-center relative z-10">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-sky-100 mb-1">
-                    Sudah Memilih
-                  </p>
-                  <p className="text-2xl font-bold text-white drop-shadow-lg">
-                    {voterStats.voted}
-                  </p>
-                  <p className="text-sm font-bold text-sky-50 mt-0.5">
+              <div 
+                data-text-content
+                className={`text-center relative z-10 transition-opacity duration-300 ${
+                  showVotedText ? 'opacity-100' : 'opacity-0'
+                }`}
+              >
+                <p className="text-xs font-semibold uppercase tracking-wider text-sky-100 mb-1 whitespace-nowrap">
+                  Sudah Memilih
+                </p>
+                <p className="text-2xl font-bold text-white drop-shadow-lg whitespace-nowrap">
+                  {voterStats.voted}
+                  <span className="pl-  1 text-sm font-bold text-sky-50 mt-0.5 whitespace-nowrap">
                     ({votedPercentage}%)
-                  </p>
-                </div>
-              )}
+                  </span>
+                </p>
+              </div>
             </div>
 
             {/* Bagian kanan: Belum memilih (abu-abu netral) */}
             <div
-              className="bg-gradient-to-br from-neutral-600/30 to-neutral-700/20 flex items-center justify-center px-6 text-white transition-all duration-500 relative group"
+              ref={notVotedRef}
+              className="bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center px-6 text-white transition-all duration-500 relative group"
               style={{ width: `${notVotedPercentage}%` }}
             >
               {/* Subtle glow effect on hover */}
               <div className="absolute inset-0 bg-slate-500/0 group-hover:bg-slate-500/10 transition-colors duration-300" />
               
-              {notVotedPercentage >= 10 && (
-                <div className="text-center relative z-10">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-slate-200 mb-1">
-                    Belum Memilih
-                  </p>
-                  <p className="text-2xl font-bold text-white drop-shadow-lg">
-                    {voterStats.notVoted}
-                    <span className="pl-1 text-sm font-bold text-slate-100 mt-0.5">
-                      ({notVotedPercentage}%)
-                    </span>
-                  </p>
-                </div>
-              )}
+              <div 
+                data-text-content
+                className={`text-center relative z-10 transition-opacity duration-300 ${
+                  showNotVotedText ? 'opacity-100' : 'opacity-0'
+                }`}
+              >
+                <p className="text-xs font-semibold uppercase tracking-wider text-slate-200 mb-1 whitespace-nowrap">
+                  Belum Memilih
+                </p>
+                <p className="text-2xl font-bold text-white drop-shadow-lg whitespace-nowrap">
+                  {voterStats.notVoted}
+                  <span className="pl-1 text-sm font-bold text-slate-100 mt-0.5">
+                    ({notVotedPercentage}%)
+                  </span>
+                </p>
+              </div>
             </div>
           </div>
         </>
