@@ -116,7 +116,7 @@ const VoterParticipation = ({
             {/* Bagian kanan: Belum memilih (abu-abu netral) */}
             <div
               ref={notVotedRef}
-              className="bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center px-6 text-white transition-all duration-500 relative group"
+              className="bg-gradient-to-br from-neutral-600/40 to-neutral-700/10 flex items-center justify-center px-6 text-white transition-all duration-500 relative group"
               style={{ width: `${notVotedPercentage}%` }}
             >
               {/* Subtle glow effect on hover */}
