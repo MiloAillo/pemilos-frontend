@@ -7,6 +7,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import type { PaginationState } from "@tanstack/react-table";
 import { apiUrl } from "@/lib/api";
 import axios from "axios";
+import AdminImportData from "@/components/admin/AdminImportData";
 
 const User = () => {
   const [userData, setUserData] = useState<UserType[]>([]);
@@ -59,7 +60,9 @@ const User = () => {
           {/* <Button onClick={() => (window.location.href = "/admin/gettoken")}>
             Download Token
           </Button> */}
-          <Button>Import Data</Button>
+          <AdminImportData refetch={fetchData}>
+            <Button type="button">Import Data</Button>
+          </AdminImportData>
           <Button>Export Data</Button>
           <AdminAddUser refetch={fetchData} isNewUser={true}>
             <Button type="button">Tambah Voter</Button>
