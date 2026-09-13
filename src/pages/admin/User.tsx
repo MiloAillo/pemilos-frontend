@@ -56,13 +56,13 @@ const User = () => {
       <div className="flex justify-between w-full">
         <h1 className="text-2xl font-bold">User</h1>
         <div className="flex gap-2">
-          <Button onClick={() => (window.location.href = "/admin/gettoken")}>
+          {/* <Button onClick={() => (window.location.href = "/admin/gettoken")}>
             Download Token
-          </Button>
-          <Button>Ekspor (Excel)</Button>
-          <Button>Tambah (CSV)</Button>
+          </Button> */}
+          <Button>Import Data</Button>
+          <Button>Export Data</Button>
           <AdminAddUser refetch={fetchData} isNewUser={true}>
-            <Button type="button">Tambah</Button>
+            <Button type="button">Tambah Voter</Button>
           </AdminAddUser>
         </div>
       </div>
