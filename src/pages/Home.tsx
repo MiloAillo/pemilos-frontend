@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import type { DetailsType } from "@/schemas/details.schema";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { apiUrl } from "@/lib/api";
 import axios from "axios";
 import CurtainTransition from "@/components/CurtainTransition";
