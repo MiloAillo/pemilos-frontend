@@ -9,6 +9,7 @@ import { apiUrl } from "@/lib/api";
 import axios from "axios";
 import AdminImportData from "@/components/admin/AdminImportData";
 import AdminExportData from "@/components/admin/AdminExportData";
+import { toast } from "sonner";
 
 const User = () => {
   const [userData, setUserData] = useState<UserType[]>([]);
@@ -42,6 +43,7 @@ const User = () => {
       setUserData(response.data.data);
     } catch (error) {
       console.log(error);
+      toast("Gagal mengambil data")
     } finally {
       setLoading(false);
     }
