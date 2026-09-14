@@ -118,22 +118,22 @@ const Form = () => {
       <ParallaxBackground className="h-screen w-screen fixed -z-10" />
       <div className="fixed top-0 left-0 right-0 z-30 bg-amber-950/30 backdrop-blur-xl border-b border-amber-200/10 rounded-b-4xl flex justify-center">
         <div className="w-full max-w-6xl px-5 py-4 flex flex-col items-center gap-3">
-          <p className="text-xs uppercase font-bodoni text-amber-100/60 tracking-[0.25rem]">
+          <p className="text-[11px] sm:text-xs uppercase font-bodoni text-amber-100/60 tracking-[0.25rem]">
             Pemilos &bull; AKSA
           </p>
-          <p className="font-bodoni font-black text-4xl md:text-5xl uppercase text-amber-100">
+          <p className="font-bodoni font-black text-2xl sm:text-4xl md:text-5xl uppercase text-amber-100 text-center">
             Pilih Maestromu
           </p>
           <hr className="w-24 border-amber-200/30" />
-          <ol className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest">
+          <ol className="flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs font-semibold uppercase tracking-widest">
             {["Pilih", "Konfirmasi", "Selesai"].map((label, i) => {
               const n = (i + 1) as 1 | 2 | 3;
               const active = step === n;
               const done = step > n;
               return (
-                <li key={label} className="flex items-center gap-2">
+                <li key={label} className="flex items-center gap-1 sm:gap-2">
                   <span
-                    className={`flex items-center justify-center w-7 h-7 rounded-full border ${
+                    className={`flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full border ${
                       active
                         ? "bg-amber-200 text-amber-950 border-amber-200"
                         : done
@@ -144,18 +144,18 @@ const Form = () => {
                     {n}
                   </span>
                   <span
-                    className={active ? "text-amber-100" : "text-white/40"}
+                    className={`${active ? "text-amber-100" : "text-white/40"} ${active ? "" : "hidden min-[400px]:inline"}`}
                   >
                     {label}
                   </span>
-                  {i < 2 && <span className="text-white/25 mx-1">/</span>}
+                  {i < 2 && <span className="text-white/25 mx-0.5 sm:mx-1">/</span>}
                 </li>
               );
             })}
           </ol>
         </div>
       </div>
-      <div className="relative z-10 w-full max-w-6xl px-5 pt-48 pb-10 flex flex-col gap-10">
+      <div className="relative z-10 w-full max-w-6xl px-5 pt-56 md:pt-48 pb-10 flex flex-col gap-10">
         {confirmation && (
           <Confirmation
             osis={selectedOsis}
@@ -171,15 +171,14 @@ const Form = () => {
 
         {success && (
           <div className="fixed inset-0 bg-black/70 z-40 flex justify-center items-center p-5">
-            <div className="bg-[#1c1f2b] w-full max-w-lg p-6 rounded-2xl border border-amber-200/25 flex flex-col items-center text-center gap-5 shadow-2xl">
-              <span className="flex items-center justify-center w-24 h-24 rounded-full bg-amber-300/15 border-2 border-amber-300">
+            <div className="bg-[#1c1f2b] w-full max-w-lg max-h-[85vh] overflow-y-auto p-6 rounded-2xl border border-amber-200/25 flex flex-col items-center text-center gap-5 shadow-2xl">
+              <span className="flex items-center justify-center w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-amber-300/15 border-2 border-amber-300">
                 <BadgeCheck
-                  size={52}
-                  className="text-amber-300"
+                  className="w-9 h-9 sm:w-[52px] sm:h-[52px] text-amber-300"
                   strokeWidth={2}
                 />
               </span>
-              <p className="font-bodoni font-black text-4xl uppercase text-amber-100">
+              <p className="font-bodoni font-black text-2xl sm:text-4xl uppercase text-amber-100">
                 Suaramu Tercatat
               </p>
               <hr className="w-24 border-amber-200/30" />
@@ -189,7 +188,7 @@ const Form = () => {
               </p>
               <button
                 onClick={handleLogout}
-                className="mt-2 px-10 py-3 rounded-full font-bodoni font-bold uppercase tracking-widest bg-amber-200 text-amber-950 hover:bg-amber-100 transition"
+                className="mt-2 w-full sm:w-auto px-10 py-3 rounded-full font-bodoni font-bold uppercase tracking-widest bg-amber-200 text-amber-950 hover:bg-amber-100 transition"
               >
                 Keluar
               </button>
@@ -197,9 +196,9 @@ const Form = () => {
           </div>
         )}
 
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-8 sm:gap-12">
           <section className="flex flex-col gap-4">
-            <h2 className="font-bodoni font-black text-3xl uppercase text-amber-200">
+            <h2 className="font-bodoni font-black text-2xl sm:text-3xl uppercase text-amber-200">
               OSIS
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 w-full">
@@ -217,7 +216,7 @@ const Form = () => {
           </section>
 
           <section className="flex flex-col gap-4">
-            <h2 className="font-bodoni font-black text-3xl uppercase text-amber-200">
+            <h2 className="font-bodoni font-black text-2xl sm:text-3xl uppercase text-amber-200">
               MPK
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 w-full">
@@ -256,7 +255,7 @@ const Form = () => {
             onClick={() => {
               setConfirmation(true);
             }}
-            className={`w-full h-12 font-bodoni font-bold uppercase tracking-widest text-xl rounded-full transition ${
+            className={`w-full h-11 sm:h-12 font-bodoni font-bold uppercase tracking-widest text-lg sm:text-xl rounded-full transition ${
               !osisValue || !mpkValue
                 ? "bg-amber-200/25 text-amber-100/40 cursor-not-allowed"
                 : "bg-amber-200 text-amber-950 hover:bg-amber-100"

@@ -35,7 +35,7 @@ const MpkCard = ({
           : "ring-1 ring-white/10 hover:ring-amber-200/50 bg-gradient-to-b from-[#412323] to-[#201816]"
       }`}
     >
-      <span className="absolute top-2 left-2 z-10 flex items-center justify-center w-9 h-9 rounded-full bg-amber-200 text-amber-950 font-bodoni font-black text-lg">
+      <span className="absolute top-2 left-2 z-10 flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-amber-200 text-amber-950 font-bodoni font-black text-base sm:text-lg">
         {number}
       </span>
       {selected && (
@@ -43,7 +43,7 @@ const MpkCard = ({
           <Check size={18} strokeWidth={3} />
         </span>
       )}
-      <p className="text-center font-semibold text-2xl italic bg-[linear-gradient(224deg,#E58C8C_-14.26%,#A47272_140.15%)] bg-clip-text text-transparent pt-1">
+      <p className="text-center font-semibold text-xl sm:text-2xl italic bg-[linear-gradient(224deg,#E58C8C_-14.26%,#A47272_140.15%)] bg-clip-text text-transparent pt-1">
         {name}
       </p>
       <img src={`/assets/${mpkImage(number)}`} alt={name} />
