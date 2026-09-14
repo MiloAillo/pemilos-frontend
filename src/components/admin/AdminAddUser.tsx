@@ -72,31 +72,37 @@ const AdminAddUser = ({
   return (
     <Dialog modal={open} onOpenChange={setOpen}>
       <DialogTrigger className="cursor-pointer">{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] dark text-foreground">
+      <DialogContent className="w-[calc(100%-2rem)] sm:max-w-[425px] max-h-[90vh] overflow-y-auto dark text-foreground p-4 sm:p-6">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Tambah User</DialogTitle>
+            <DialogTitle className="text-base sm:text-lg">Tambah User</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-3">
-              <Label htmlFor="">Nama Lengkap</Label>
-              <Input name="name" />
+          <div className="grid gap-3 sm:gap-4 py-3 sm:py-4">
+            <div className="grid gap-2">
+              <Label className="text-xs sm:text-sm">Nama Lengkap</Label>
+              <Input name="name" required />
             </div>
-            <div className="grid gap-3">
-              <Label htmlFor="" className="">Username<span className="text-neutral-500 text-xs">*NIS / Nama Panggilan</span></Label>
-              <Input id="username-1" name="username" placeholder="ex: 11432" />
+            <div className="grid gap-2">
+              <Label className="text-xs sm:text-sm flex items-center justify-between flex-wrap gap-1">
+                <span>Username</span>
+                <span className="text-neutral-400 text-[11px]">*NIS / Nama Panggilan</span>
+              </Label>
+              <Input id="username-1" name="username" placeholder="ex: 11432" required />
             </div>
-            <div className="grid gap-3">
-              <Label htmlFor="">Password<span className="text-neutral-500 text-xs">*[6-randomChar]:[username]</span></Label>
-              <Input name="password" placeholder="ex: zX8kV9:11432" />
+            <div className="grid gap-2">
+              <Label className="text-xs sm:text-sm flex items-center justify-between flex-wrap gap-1">
+                <span>Password</span>
+                <span className="text-neutral-400 text-[11px]">*[6-char]:[username]</span>
+              </Label>
+              <Input name="password" placeholder="ex: zX8kV9:11432" required />
             </div>
-            <div className="grid gap-3">
-              <Label htmlFor="">Kelas</Label>
+            <div className="grid gap-2">
+              <Label className="text-xs sm:text-sm">Kelas</Label>
               <Select onValueChange={setKelas}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select role" />
+                  <SelectValue placeholder="Pilih Kelas" />
                 </SelectTrigger>
-                <SelectContent className="dark text-foreground">
+                <SelectContent className="dark text-foreground max-h-60">
                   <SelectGroup>
                     {classOptions.map((clas) => (
                       <SelectItem key={clas} value={clas}>
@@ -109,11 +115,13 @@ const AdminAddUser = ({
               <input type="hidden" name="kelas" value={kelas} />
             </div>
           </div>
-          <DialogFooter>
+          <DialogFooter className="gap-2 sm:gap-0">
             <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="outline" className="w-full sm:w-auto">
+                Cancel
+              </Button>
             </DialogClose>
-            <Button type="submit">
+            <Button type="submit" className="w-full sm:w-auto">
               {isNewUser ? "Add User" : "Save changes"}
             </Button>
           </DialogFooter>

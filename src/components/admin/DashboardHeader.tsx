@@ -30,13 +30,13 @@ const DashboardHeader = ({
   };
 
   return (
-    <div className="flex gap-6 mb-8 px-1 justify-between items-center">
+    <div className="flex flex-col gap-3 mb-6 px-1 md:flex-row md:gap-6 md:mb-8 md:justify-between md:items-center">
       {/* Real-time clock - Primary focal point */}
-      <div className="flex items-baseline gap-3">
-        <p className="text-5xl font-bold tracking-tight text-white">
+      <div className="flex items-baseline gap-2 md:gap-3">
+        <p className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
           {formatTimeWIB(currentTime)}
         </p>
-        <span className="text-lg font-medium text-white/60 tracking-wide">
+        <span className="text-base md:text-lg font-medium text-white/60 tracking-wide">
           WIB
         </span>
       </div>
@@ -62,18 +62,18 @@ const DashboardHeader = ({
         </span>
       ) : (
         // Normal state: tampilkan status voting
-        <div className={`flex items-center gap-3 px-5 py-2.5 rounded-lg border-2 transition-all duration-500 ${
+        <div className={`flex items-center gap-3 px-4 py-2 md:px-5 md:py-2.5 rounded-lg border-2 transition-all duration-500 self-start md:self-auto ${
           voteStatus 
             ? "bg-emerald-500/10 border-emerald-500/35" 
             : "bg-red-500/10 border-red-500/35"
         }`}>
           {voteStatus ? (
-            <Unlock className="text-emerald-400" size={24} strokeWidth={2.5} />
+            <Unlock className="text-emerald-400" size={22} strokeWidth={2.5} />
           ) : (
-            <Lock className="text-red-400" size={24} strokeWidth={2.5} />
+            <Lock className="text-red-400" size={22} strokeWidth={2.5} />
           )}
           <span
-            className={`text-base font-bold tracking-wide ${
+            className={`text-sm md:text-base font-bold tracking-wide ${
               voteStatus ? "text-emerald-400" : "text-red-400"
             }`}
           >

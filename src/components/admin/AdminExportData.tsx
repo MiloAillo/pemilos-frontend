@@ -101,22 +101,22 @@ const AdminExportData = ({ children }: { children: React.ReactNode }) => {
   return (
     <Dialog modal={open} onOpenChange={setOpen}>
       <DialogTrigger className="cursor-pointer">{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] dark text-foreground">
+      <DialogContent className="w-[calc(100%-2rem)] sm:max-w-[425px] max-h-[90vh] overflow-y-auto dark text-foreground p-4 sm:p-6">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Export Data</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-base sm:text-lg">Export Data</DialogTitle>
+            <DialogDescription className="text-xs sm:text-sm">
               Gunakan ini untuk export data voter berdasarkan kelas ke file .CSV
             </DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-3">
-              <Label>Pilih Kelas</Label>
+          <div className="grid gap-3 sm:gap-4 py-3 sm:py-4">
+            <div className="grid gap-2">
+              <Label className="text-xs sm:text-sm">Pilih Kelas</Label>
               <Select value={selectedClass} onValueChange={setSelectedClass}>
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Pilih Kelas" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="max-h-60">
                   {classOptions.map((clas) => (
                     <SelectItem key={clas} value={clas}>
                       {clas}
@@ -126,13 +126,17 @@ const AdminExportData = ({ children }: { children: React.ReactNode }) => {
               </Select>
             </div>
           </div>
-          <DialogFooter>
+          <DialogFooter className="gap-2 sm:gap-0">
             <DialogClose asChild>
-              <Button variant="outline" type="button">
+              <Button variant="outline" type="button" className="w-full sm:w-auto">
                 Cancel
               </Button>
             </DialogClose>
-            <Button type="submit" disabled={isExporting || !selectedClass}>
+            <Button
+              type="submit"
+              disabled={isExporting || !selectedClass}
+              className="w-full sm:w-auto"
+            >
               {isExporting ? "Mengexport..." : "Export"}
             </Button>
           </DialogFooter>

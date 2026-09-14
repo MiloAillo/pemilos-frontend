@@ -69,28 +69,31 @@ const GetToken = () => {
   };
 
   return (
-    <form
-      onSubmit={(e) => {
-        submit(e);
-      }}
-      className="flex h-10 gap-5"
-    >
-      <select
-        ref={selectRef}
-        name="kelas"
-        id="kelas"
-        className="text-white border-2 border-white p-2 rounded-sm w-full"
+    <section className="space-y-4">
+      <h1 className="text-2xl font-bold">Download Token</h1>
+      <form
+        onSubmit={(e) => {
+          submit(e);
+        }}
+        className="flex flex-col sm:flex-row gap-3 sm:gap-4 sm:h-10 max-w-md"
       >
-        {classOptions.map((clas) => (
-          <option key={clas} className="text-black" value={clas}>
-            {clas}
-          </option>
-        ))}
-      </select>
-      <Button type="submit" className="h-full rounded-sm">
-        Download
-      </Button>
-    </form>
+        <select
+          ref={selectRef}
+          name="kelas"
+          id="kelas"
+          className="text-white bg-neutral-900 border border-white/20 p-2 rounded-md w-full h-10 text-sm"
+        >
+          {classOptions.map((clas) => (
+            <option key={clas} className="text-black bg-white" value={clas}>
+              {clas}
+            </option>
+          ))}
+        </select>
+        <Button type="submit" className="h-10 rounded-md shrink-0">
+          Download
+        </Button>
+      </form>
+    </section>
   );
 };
 
