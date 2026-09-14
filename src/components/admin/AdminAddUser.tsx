@@ -79,16 +79,16 @@ const AdminAddUser = ({
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-3">
-              <Label htmlFor="">Nama</Label>
+              <Label htmlFor="">Nama Lengkap</Label>
               <Input name="name" />
             </div>
             <div className="grid gap-3">
-              <Label htmlFor="">Username</Label>
-              <Input id="username-1" name="username" />
+              <Label htmlFor="" className="">Username<span className="text-neutral-500 text-xs">*NIS / Nama Panggilan</span></Label>
+              <Input id="username-1" name="username" placeholder="ex: 11432" />
             </div>
             <div className="grid gap-3">
-              <Label htmlFor="">Password</Label>
-              <Input name="password" />
+              <Label htmlFor="">Password<span className="text-neutral-500 text-xs">*[6-randomChar]:[username]</span></Label>
+              <Input name="password" placeholder="ex: zX8kV9:11432" />
             </div>
             <div className="grid gap-3">
               <Label htmlFor="">Kelas</Label>
