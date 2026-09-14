@@ -114,8 +114,8 @@ const Form = () => {
   }, [osisValue, mpkValue]);
 
   return (
-    <div className="relative w-screen min-h-screen font-sans text-white flex justify-center">
-      <ParallaxBackground className="h-screen w-screen fixed -z-10" />
+    <div className="relative w-screen min-h-dvh font-sans text-white flex justify-center">
+      <ParallaxBackground className="h-dvh w-screen fixed -z-10" />
       <div className="fixed top-0 left-0 right-0 z-30 bg-amber-950/30 backdrop-blur-xl border-b border-amber-200/10 rounded-b-4xl flex justify-center">
         <div className="w-full max-w-6xl px-5 py-4 flex flex-col items-center gap-3">
           <p className="text-[11px] sm:text-xs uppercase font-bodoni text-amber-100/60 tracking-[0.25rem]">
