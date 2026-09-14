@@ -20,12 +20,15 @@ const Vote = () => {
   const role = filter === "ADMIN" ? "admin" : "voter";
 
 const fetchData = useCallback(async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get(
-        `${apiUrl}/admin/user?isVoted=${voted}&name=${search}&kelas=${filter}&role=${role}&page=${
+  setLoading(true);
+
+  const url = `${apiUrl}/admin/user?isVoted=${voted}&name=${search}&filter=${filter}&role=${role}&page=${
           page.pageIndex + 1
-        }`,
+        }`
+  
+  try {  
+      const response = await axios.get(
+        url,
         {
           headers: {
             "ngrok-skip-browser-warning": "true",
@@ -61,7 +64,7 @@ const fetchData = useCallback(async () => {
 
   return (
     <section>
-      <h1 className="text-2xl font-bold">Vote</h1>
+      <h1 className="text-2xl font-bold">Suara</h1>
 
       <div className="grid gap-2 mt-4">
         <div className="w-full px-2 py-2 rounded-xl border-2 text-center">

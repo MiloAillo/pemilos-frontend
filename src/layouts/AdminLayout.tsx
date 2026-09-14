@@ -4,6 +4,7 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import { Outlet, useSearchParams } from "react-router-dom";
 import CurtainTransition from "@/components/CurtainTransition";
+import { ThemeProvider } from "@/components/ui/theme-provider";
 
 const AdminLayout = () => {
   const [showCurtainOpen, setShowCurtainOpen] = useState(true);
@@ -12,7 +13,7 @@ const AdminLayout = () => {
   const isFullscreen = searchParams.get('fullscreen') === 'true';
 
   return (
-    <div className='dark'>
+    <ThemeProvider defaultTheme="dark" storageKey="admin-theme">
       {showCurtainOpen && (
         <CurtainTransition mode="open" onClosed={() => setShowCurtainOpen(false)} />
       )}
@@ -25,7 +26,7 @@ const AdminLayout = () => {
           <Toaster />
         </SidebarInset>
       </SidebarProvider>
-    </div>
+    </ThemeProvider>
   );
 };
 

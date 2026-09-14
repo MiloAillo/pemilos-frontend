@@ -120,6 +120,7 @@ export function DataTable<TData, TValue>({
                 <SelectContent className="dark">
                   <SelectItem value="All">All</SelectItem>
                   <SelectItem value="true">True</SelectItem>
+                  <SelectItem value="false">False</SelectItem>
                 </SelectContent>
               </Select>
             )}

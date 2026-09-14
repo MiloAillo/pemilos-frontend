@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { apiUrl } from "@/lib/api";
 import { Button } from "../ui/button";
+import { ModeToggle } from "../ui/mode-toggle";
 
 const items = [
   {
@@ -116,15 +117,20 @@ const AdminSidebar = () => {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
+        <SidebarMenu className="flex flex-col gap-2">
+          <SidebarMenuItem className="mb-2">
             <div className="flex items-center space-x-2">
               <Switch checked={checked} onCheckedChange={handleToggle} />
               <Label htmlFor="airplane-mode">Toggle Vote</Label>
             </div>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild className="mt-4">
+            <div className="flex items-center space-x-2">
+              <ModeToggle />
+            </div>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild className="">
               <Button
                 onClick={() => Logouthandle()}
                 className="bg-red-500 text-white"
