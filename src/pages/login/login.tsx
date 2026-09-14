@@ -121,7 +121,7 @@ const Login = () => {
                 type="text"
                 name="username"
                 id="username"
-                placeholder="contoh: 2024039"
+                placeholder="contoh: 1234567"
                 className="w-full h-10 rounded-lg bg-white/[0.06] border border-white/10 focus:border-amber-200/50 focus:outline-none px-3 text-white placeholder:text-white/25"
               />
               <p className="text-[11px] text-amber-100/40">
@@ -140,7 +140,7 @@ const Login = () => {
                   type="text"
                   name="password"
                   id="password"
-                  placeholder="contoh: zX8cV2"
+                  placeholder="contoh: Xx0000"
                   className="w-full h-10 rounded-lg bg-white/[0.06] border border-white/10 focus:border-amber-200/50 focus:outline-none px-3 text-white placeholder:text-white/25"
                 />
                 <p className="font-sans font-bold text-xl text-amber-100/60">:</p>
