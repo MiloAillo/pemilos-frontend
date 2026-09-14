@@ -1,0 +1,145 @@
+import * as React from "react";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
+import { Label } from "../ui/label";
+import { Button } from "../ui/button";
+import axios from "axios";
+import { apiUrl } from "@/lib/api";
+import { toast } from "sonner";
+import { classOptions } from "@/lib/class";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+
+const AdminExportData = ({ children }: { children: React.ReactNode }) => {
+  const [open, setOpen] = useState(false);
+  const [selectedClass, setSelectedClass] = useState<string>("");
+  const [isExporting, setIsExporting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!selectedClass) {
+      toast.error("Silakan pilih kelas terlebih dahulu.");
+      return;
+    }
+
+    setIsExporting(true);
+
+    try {
+      const response = await axios.get(
+        `${apiUrl}/admin/user?kelas=${encodeURIComponent(selectedClass)}`,
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+            Authorization: `${localStorage.getItem("Authorization")}`,
+          },
+        }
+      );
+
+      if (response.data.status === "success") {
+        const filteredData: any = [];
+        response.data.data.forEach(
+          (user: { name: any; class: any; username: any; password: any }) => {
+            const sanitize = (val: any) => {
+              if (val == null) return "";
+              return String(val).replace(/,/g, ".");
+            };
+
+            filteredData.push({
+              NAMA: sanitize(user.name),
+              KELAS: sanitize(user.class),
+              USERNAME: sanitize(user.username),
+              TOKEN: sanitize(user.password),
+            });
+          }
+        );
+
+        const headers = ["NAMA", "KELAS", "USERNAME", "TOKEN"];
+        const csv = [
+          headers.join(","),
+          ...filteredData.map((row: { [x: string]: any }) =>
+            headers.map((h) => row[h]).join(",")
+          ),
+        ].join("\n");
+
+        const blob = new Blob([csv], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${selectedClass}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        toast.success("Data berhasil diexport");
+        setOpen(false);
+        setSelectedClass("");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Export data gagal. Silakan coba lagi.");
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  return (
+    <Dialog modal={open} onOpenChange={setOpen}>
+      <DialogTrigger className="cursor-pointer">{children}</DialogTrigger>
+      <DialogContent className="sm:max-w-[425px] dark text-foreground">
+        <form onSubmit={handleSubmit}>
+          <DialogHeader>
+            <DialogTitle>Export Data</DialogTitle>
+            <DialogDescription>
+              Gunakan ini untuk export data voter berdasarkan kelas ke file .CSV
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-3">
+              <Label>Pilih Kelas</Label>
+              <Select value={selectedClass} onValueChange={setSelectedClass}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Pilih Kelas" />
+                </SelectTrigger>
+                <SelectContent>
+                  {classOptions.map((clas) => (
+                    <SelectItem key={clas} value={clas}>
+                      {clas}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline" type="button">
+                Cancel
+              </Button>
+            </DialogClose>
+            <Button type="submit" disabled={isExporting || !selectedClass}>
+              {isExporting ? "Mengexport..." : "Export"}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default AdminExportData;

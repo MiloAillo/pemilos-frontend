@@ -113,12 +113,12 @@ const AdminImportData = ({
           <DialogHeader>
             <DialogTitle>Import Data</DialogTitle>
             <DialogDescription>
-              This form is used to add many voters at once using a CSV file.
+              Gunakan ini untuk import banyak voter menggunakan file .CSV
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-3">
-              <Label>Data Type</Label>
+              <Label>Tipe Data</Label>
               <Tabs
                 value={isWithPassword ? "with-password" : "no-password"}
                 onValueChange={handleTabChange}
@@ -136,7 +136,7 @@ const AdminImportData = ({
 
             <div className="p-3 bg-neutral-950 border border-neutral-800 rounded-md font-mono text-xs overflow-x-auto">
               <p className="text-neutral-300 mb-2 text-[11px] font-medium bg-neutral-900 w-fit px-2.5 py-1 rounded border border-neutral-800">
-                .CSV example
+                contoh .CSV
               </p>
               {isWithPassword ? (
                 <div className="leading-relaxed">
@@ -191,7 +191,7 @@ const AdminImportData = ({
             </div>
 
             <div className="grid gap-3">
-              <Label>CSV File</Label>
+              <Label>File .CSV</Label>
               {!selectedFile ? (
                 <div
                   onClick={() => fileRef.current?.click()}
