@@ -35,7 +35,6 @@ const VALANCE_STYLE = {
 
 const PANEL_STYLE_BASE = {
   backgroundImage: FOLD_GRADIENT,
-  backgroundSize: "80px 100%",
   backfaceVisibility: "hidden",
   willChange: "transform, filter",
 } as const;
@@ -95,7 +94,7 @@ export default function CurtainTransition({
   if (mode === "close") {
     return (
       <div className="fixed inset-0 z-50 pointer-events-none" aria-hidden>
-        <div className="absolute inset-0" style={{ background: "#242633" }} />
+        <div className="absolute inset-0" style={{ background: "#2a1a0a" }} />
         <motion.div
           className="absolute inset-y-0 left-0 w-1/2"
           initial={{ x: "-110%", rotateY: -15, scaleX: 0.9 }}
@@ -257,7 +256,7 @@ export default function CurtainTransition({
         style={{
           zIndex: 1,
           background:
-            "linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.5) 50%, transparent 100%)",
+            "linear-gradient(90deg, transparent 0%, rgba(42,26,10,0.5) 50%, transparent 100%)",
         }}
       />
       <motion.div
