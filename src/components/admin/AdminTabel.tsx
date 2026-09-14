@@ -152,10 +152,14 @@ export const renderUserCard = (refetch: () => void) => {
           </span>
         </div>
 
-        <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-xs">
+        <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 text-xs">
           <span className="text-muted-foreground">Username</span>
           <span className="font-mono text-white/90 truncate">
             {user.username}
+          </span>
+          <span className="text-muted-foreground">Password</span>
+          <span className="font-mono text-white/90 break-all select-all">
+            {user.password}
           </span>
         </div>
 
