@@ -215,6 +215,7 @@ const Form = () => {
             isVoteNotAllowed={isVoteNotAllowed}
             isNotAuthorized={isNotAuthorized}
             submitError={submitError}
+            isTopBarShrunk={isShrunk}
           />
         )}
 

@@ -18,6 +18,7 @@ interface ConfirmationProps {
   isVoteNotAllowed: boolean;
   isNotAuthorized: boolean;
   submitError: string | null;
+  isTopBarShrunk?: boolean;
 }
 
 const SummaryRow = ({ candidate }: { candidate: SelectedCandidate }) => (
@@ -56,17 +57,22 @@ const Confirmation = ({
   isVoteNotAllowed,
   isNotAuthorized,
   submitError,
+  isTopBarShrunk = false,
 }: ConfirmationProps) => {
   return (
     <div
       onClick={() => {
         if (!isSent) setConfirmation(false);
       }}
-      className="fixed inset-0 bg-black/70 z-50 flex justify-center items-center short:items-start short:overflow-y-auto p-3 sm:p-5"
+      className={`fixed inset-0 bg-black/70 z-50 flex justify-center p-3 sm:p-5 transition-all duration-300 ${
+        isTopBarShrunk
+          ? "items-center pt-16 pb-4 overflow-y-auto"
+          : "items-center pt-44 md:pt-48 pb-4 overflow-y-auto"
+      }`}
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-[#1c1f2b] w-full max-w-lg max-h-[85dvh] short:max-h-none overflow-y-auto h-fit short:mt-44 short:mb-4 p-3 sm:p-6 rounded-2xl border border-amber-200/25 flex flex-col gap-2.5 sm:gap-4 shadow-2xl"
+        className="bg-[#1c1f2b] w-full max-w-lg max-h-[85dvh] overflow-y-auto h-fit p-4 sm:p-6 rounded-2xl border border-amber-200/25 flex flex-col gap-2.5 sm:gap-4 shadow-2xl"
       >
         <div>
           <p className="font-bodoni font-black text-lg short:text-base sm:text-2xl text-amber-100 uppercase">
