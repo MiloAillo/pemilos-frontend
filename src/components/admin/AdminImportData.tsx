@@ -79,7 +79,7 @@ const AdminImportData = ({
     const formData = new FormData();
     formData.append("file", selectedFile);
 
-    const url = isWithPassword ? `${apiUrl}/admin/upload/csv` : `${apiUrl}/admin/upload/csv/token`
+    const url = isWithPassword ? `${apiUrl}/admin/upload/csv/token` : `${apiUrl}/admin/upload/csv`
 
     try {
       await axios.post(url, formData, {
