@@ -99,7 +99,7 @@ const Login = () => {
             </li>
             <li className="flex gap-2 text-xs text-amber-100/70">
               <span className="font-bold text-amber-200">2.</span>
-              Isi username dan token di bawah, lalu tekan Masuk
+              Isi username dan token di bawah, lalu tekan 'masuk'
             </li>
             <li className="flex gap-2 text-xs text-amber-100/70">
               <span className="font-bold text-amber-200">3.</span>

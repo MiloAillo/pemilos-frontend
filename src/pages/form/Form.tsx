@@ -8,7 +8,7 @@ import { voteSummary } from "@/data/voteSummary";
 import { apiUrl } from "@/lib/api";
 import axios, { isAxiosError } from "axios";
 import { BadgeCheck, TriangleAlert } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
 
 interface LoaderCandidate {
@@ -33,6 +33,42 @@ const Form = () => {
   const [isNotAuthorized, setIsNotAuthorized] = useState<boolean>(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
+  const [isShrunk, setIsShrunk] = useState<boolean>(false);
+
+  const topBarRef = useRef<HTMLDivElement | null>(null);
+  const osisHeaderRef = useRef<HTMLHeadingElement | null>(null);
+  const expandedHeightRef = useRef<number>(0);
+
+  useEffect(() => {
+    const updateExpandedHeight = () => {
+      if (!isShrunk && topBarRef.current) {
+        expandedHeightRef.current = topBarRef.current.offsetHeight;
+      }
+    };
+
+    updateExpandedHeight();
+
+    const handleScroll = () => {
+      const osisHeader = osisHeaderRef.current;
+      if (!osisHeader) return;
+
+      const triggerHeight = (expandedHeightRef.current || topBarRef.current?.offsetHeight || 0) + 16;
+      const rect = osisHeader.getBoundingClientRect();
+      setIsShrunk(rect.top <= triggerHeight);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", () => {
+      updateExpandedHeight();
+      handleScroll();
+    });
+
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isShrunk]);
 
   const mpkData = data?.[0]?.mpkData ?? [];
   const osisData = data?.[0]?.osisData ?? [];
@@ -116,15 +152,28 @@ const Form = () => {
   return (
     <div className="relative w-screen min-h-dvh font-sans text-white flex justify-center">
       <ParallaxBackground className="h-dvh w-screen fixed -z-10" />
-      <div className="fixed top-0 left-0 right-0 z-30 bg-amber-950/30 backdrop-blur-xl border-b border-amber-200/10 rounded-b-4xl flex justify-center">
-        <div className="w-full max-w-6xl px-5 py-4 flex flex-col items-center gap-3">
-          <p className="text-[11px] sm:text-xs uppercase font-bodoni text-amber-100/60 tracking-[0.25rem]">
-            Pemilos &bull; AKSA
-          </p>
-          <p className="font-bodoni font-black text-2xl sm:text-4xl md:text-5xl uppercase text-amber-100 text-center">
-            Pilih Maestromu
-          </p>
-          <hr className="w-24 border-amber-200/30" />
+      <div
+        ref={topBarRef}
+        className={`fixed top-0 left-0 right-0 z-30 bg-amber-950/30 backdrop-blur-xl border-b border-amber-200/10 flex justify-center transition-all duration-300 ${
+          isShrunk ? "py-2.5 rounded-b-2xl shadow-lg shadow-black/20" : "py-4 rounded-b-4xl"
+        }`}
+      >
+        <div className="w-full max-w-6xl px-5 flex flex-col items-center">
+          <div
+            className={`flex flex-col items-center gap-3 w-full transition-all duration-300 overflow-hidden ${
+              isShrunk
+                ? "max-h-0 opacity-0 -translate-y-2 pointer-events-none mb-0"
+                : "max-h-48 opacity-100 translate-y-0 mb-3"
+            }`}
+          >
+            <p className="text-[11px] sm:text-xs uppercase font-bodoni text-amber-100/60 tracking-[0.25rem]">
+              Pemilos &bull; AKSA
+            </p>
+            <p className="font-bodoni font-black text-2xl sm:text-4xl md:text-5xl uppercase text-amber-100 text-center">
+              Pilih Maestromu
+            </p>
+            <hr className="w-24 border-amber-200/30" />
+          </div>
           <ol className="flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs font-semibold uppercase tracking-widest">
             {["Pilih", "Konfirmasi", "Selesai"].map((label, i) => {
               const n = (i + 1) as 1 | 2 | 3;
@@ -155,7 +204,7 @@ const Form = () => {
           </ol>
         </div>
       </div>
-      <div className="relative z-10 w-full max-w-6xl px-5 pt-56 md:pt-48 pb-10 flex flex-col gap-10">
+      <div className="relative z-10 w-full max-w-6xl px-5 pt-40 md:pt-48 pb-10 flex flex-col gap-10">
         {confirmation && (
           <Confirmation
             osis={selectedOsis}
@@ -198,7 +247,10 @@ const Form = () => {
 
         <div className="flex flex-col gap-8 sm:gap-12">
           <section className="flex flex-col gap-4">
-            <h2 className="font-bodoni font-black text-2xl sm:text-3xl uppercase text-amber-200">
+            <h2
+              ref={osisHeaderRef}
+              className="font-bodoni font-black text-2xl sm:text-3xl uppercase text-amber-200 scroll-mt-28"
+            >
               OSIS
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 w-full">
@@ -255,7 +307,7 @@ const Form = () => {
             onClick={() => {
               setConfirmation(true);
             }}
-            className={`w-full h-11 sm:h-12 font-bodoni font-bold uppercase tracking-widest text-lg sm:text-xl rounded-full transition ${
+            className={`w-full h-11 sm:h-12 -mb-4 font-bodoni font-bold uppercase tracking-widest text-lg sm:text-xl rounded-full transition ${
               !osisValue || !mpkValue
                 ? "bg-amber-200/25 text-amber-100/40 cursor-not-allowed"
                 : "bg-amber-200 text-amber-950 hover:bg-amber-100"

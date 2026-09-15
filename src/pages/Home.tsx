@@ -44,7 +44,7 @@ const ListRow = ({
   >
     <span className="shrink-0 text-base leading-none">
       <motion.span
-        className="inline-block"
+        className="inline-block mt-1"
         animate={{ rotate: [0, 18, -18, 0], scale: [1, 1.25, 1, 1] }}
         transition={{
           duration: 2,
@@ -158,7 +158,7 @@ const CandidateCard = ({ data }: { data: DetailsType }) => {
             <span>🎯</span>
           </div>
           <hr className="opacity-20" />
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-4 mt-1">
             {data.mission.map((misi, idx) => (
               <ListRow key={idx} index={idx} html={misi} />
             ))}
@@ -176,7 +176,7 @@ const CandidateCard = ({ data }: { data: DetailsType }) => {
             <span>🌈</span>
           </div>
           <hr className="opacity-20" />
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-4">
             {data.programs.map((proker, idx) => (
               <ListRow key={idx} index={idx} html={proker} />
             ))}
