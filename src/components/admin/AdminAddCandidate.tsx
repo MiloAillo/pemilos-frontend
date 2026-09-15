@@ -25,32 +25,34 @@ const AdminAddCandidate = ({
     <Dialog>
       <form>
         <DialogTrigger className="cursor-pointer">{children}</DialogTrigger>
-        <DialogContent className="sm:max-w-[425px] dark text-foreground">
+        <DialogContent className="w-[calc(100%-2rem)] sm:max-w-[425px] max-h-[90vh] overflow-y-auto dark text-foreground p-4 sm:p-6">
           <DialogHeader>
-            <DialogTitle>
+            <DialogTitle className="text-base sm:text-lg">
               {isNewCandidate ? "Add Candidate" : "Edit Candidate"}
             </DialogTitle>
           </DialogHeader>
 
-          <div className="grid gap-4">
-            <div className="grid gap-3">
-              <Label htmlFor="">Nama</Label>
+          <div className="grid gap-3 sm:gap-4 py-3 sm:py-4">
+            <div className="grid gap-2">
+              <Label className="text-xs sm:text-sm">Nama</Label>
               <Input name="name" defaultValue={candidate?.name} />
             </div>
-            <div className="grid gap-3">
-              <Label htmlFor="">Nomor</Label>
+            <div className="grid gap-2">
+              <Label className="text-xs sm:text-sm">Nomor</Label>
               <Input name="number" defaultValue={candidate?.number} />
             </div>
-            <div className="grid gap-3">
-              <Label htmlFor="">Foto</Label>
+            <div className="grid gap-2">
+              <Label className="text-xs sm:text-sm">Foto</Label>
               <Input name="image" type="file" />
             </div>
           </div>
-          <DialogFooter>
+          <DialogFooter className="gap-2 sm:gap-0">
             <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="outline" className="w-full sm:w-auto">
+                Cancel
+              </Button>
             </DialogClose>
-            <Button type="submit">
+            <Button type="submit" className="w-full sm:w-auto">
               {isNewCandidate ? "Add Candidate" : "Save changes"}
             </Button>
           </DialogFooter>

@@ -9,6 +9,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "../ui/sidebar";
 import { Link } from "react-router-dom";
 import { Switch } from "../ui/switch";
@@ -39,6 +40,13 @@ const items = [
 
 const AdminSidebar = () => {
   const [checked, setChecked] = useState<boolean>(false);
+  const { isMobile, setOpenMobile } = useSidebar();
+
+  const handleNavClick = () => {
+    if (isMobile) {
+      setOpenMobile(false);
+    }
+  };
 
   const getToggle = async () => {
     try {
@@ -91,9 +99,9 @@ const AdminSidebar = () => {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="/admin">
+              <Link to="/admin" onClick={handleNavClick}>
                 <span className="text-base font-semibold">Pemilom Admin</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -105,7 +113,7 @@ const AdminSidebar = () => {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <Link to={item.url}>
+                    <Link to={item.url} onClick={handleNavClick}>
                       <item.icon />
                       <span>{item.title}</span>
                     </Link>
@@ -120,8 +128,12 @@ const AdminSidebar = () => {
         <SidebarMenu className="flex flex-col gap-2">
           <SidebarMenuItem className="mb-2">
             <div className="flex items-center space-x-2">
-              <Switch checked={checked} onCheckedChange={handleToggle} />
-              <Label htmlFor="airplane-mode">Toggle Vote</Label>
+              <Switch
+                id="toggle-vote"
+                checked={checked}
+                onCheckedChange={handleToggle}
+              />
+              <Label htmlFor="toggle-vote">Toggle Vote</Label>
             </div>
           </SidebarMenuItem>
           <SidebarMenuItem>
@@ -133,7 +145,7 @@ const AdminSidebar = () => {
             <SidebarMenuButton asChild className="">
               <Button
                 onClick={() => Logouthandle()}
-                className="bg-red-500 text-white"
+                className="bg-red-500 text-white w-full"
               >
                 <LogOut />
                 <span>Logout</span>

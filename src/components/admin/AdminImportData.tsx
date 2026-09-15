@@ -108,38 +108,38 @@ const AdminImportData = ({
   return (
     <Dialog modal={open} onOpenChange={setOpen}>
       <DialogTrigger className="cursor-pointer">{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] dark text-foreground">
+      <DialogContent className="w-[calc(100%-2rem)] sm:max-w-[425px] max-h-[90vh] overflow-y-auto dark text-foreground p-4 sm:p-6">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Import Data</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-base sm:text-lg">Import Data</DialogTitle>
+            <DialogDescription className="text-xs sm:text-sm">
               Gunakan ini untuk import banyak voter menggunakan file .CSV
             </DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-3">
-              <Label>Tipe Data</Label>
+          <div className="grid gap-3 sm:gap-4 py-3 sm:py-4">
+            <div className="grid gap-2 sm:gap-3">
+              <Label className="text-xs sm:text-sm">Tipe Data</Label>
               <Tabs
                 value={isWithPassword ? "with-password" : "no-password"}
                 onValueChange={handleTabChange}
               >
                 <TabsList className="w-full bg-transparent border border-neutral-800">
-                  <TabsTrigger value="no-password" className="flex-1">
+                  <TabsTrigger value="no-password" className="flex-1 text-xs sm:text-sm">
                     No Password
                   </TabsTrigger>
-                  <TabsTrigger value="with-password" className="flex-1">
+                  <TabsTrigger value="with-password" className="flex-1 text-xs sm:text-sm">
                     With Password
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
             </div>
 
-            <div className="p-3 bg-neutral-950 border border-neutral-800 rounded-md font-mono text-xs overflow-x-auto">
-              <p className="text-neutral-300 mb-2 text-[11px] font-medium bg-neutral-900 w-fit px-2.5 py-1 rounded border border-neutral-800">
+            <div className="p-2.5 sm:p-3 bg-neutral-950 border border-neutral-800 rounded-md font-mono text-[11px] sm:text-xs overflow-x-auto">
+              <p className="text-neutral-300 mb-2 text-[10px] sm:text-[11px] font-medium bg-neutral-900 w-fit px-2 py-0.5 sm:px-2.5 sm:py-1 rounded border border-neutral-800">
                 contoh .CSV
               </p>
               {isWithPassword ? (
-                <div className="leading-relaxed">
+                <div className="leading-relaxed whitespace-nowrap">
                   <div className="text-cyan-400 font-semibold">
                     NAMA<span className="text-neutral-600">,</span>
                     USERNAME<span className="text-neutral-600">,</span>
@@ -166,7 +166,7 @@ const AdminImportData = ({
                   </div>
                 </div>
               ) : (
-                <div className="leading-relaxed">
+                <div className="leading-relaxed whitespace-nowrap">
                   <div className="text-cyan-400 font-semibold">
                     NAMA<span className="text-neutral-600">,</span>
                     USERNAME<span className="text-neutral-600">,</span>
@@ -190,26 +190,30 @@ const AdminImportData = ({
               )}
             </div>
 
-            <div className="grid gap-3">
-              <Label>File .CSV</Label>
+            <div className="grid gap-2 sm:gap-3">
+              <Label className="text-xs sm:text-sm">File .CSV</Label>
               {!selectedFile ? (
                 <div
                   onClick={() => fileRef.current?.click()}
-                  className="border-2 border-dashed border-neutral-700 rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer hover:border-neutral-500 hover:bg-neutral-800/50 transition-colors"
+                  className="border-2 border-dashed border-neutral-700 rounded-lg p-4 sm:p-6 flex flex-col items-center justify-center cursor-pointer hover:border-neutral-500 hover:bg-neutral-800/50 transition-colors"
                 >
-                  <Upload className="h-8 w-8 text-neutral-400 mb-2" />
-                  <p className="text-sm text-neutral-400">Klik untuk upload file CSV</p>
-                  <p className="text-xs text-neutral-500 mt-1">Format: .csv</p>
+                  <Upload className="h-6 w-6 sm:h-8 sm:w-8 text-neutral-400 mb-1.5 sm:mb-2" />
+                  <p className="text-xs sm:text-sm text-neutral-400 text-center">
+                    Klik untuk upload file CSV
+                  </p>
+                  <p className="text-[11px] sm:text-xs text-neutral-500 mt-0.5">
+                    Format: .csv
+                  </p>
                 </div>
               ) : (
-                <div className="border border-neutral-700 rounded-lg p-3 flex items-center justify-between bg-neutral-800/30">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <FileText className="h-8 w-8 text-neutral-400 flex-shrink-0" />
+                <div className="border border-neutral-700 rounded-lg p-2.5 sm:p-3 flex items-center justify-between bg-neutral-800/30">
+                  <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                    <FileText className="h-6 w-6 sm:h-8 sm:w-8 text-neutral-400 flex-shrink-0" />
                     <div className="min-w-0">
-                      <p className="text-sm font-medium truncate max-w-[200px]">
+                      <p className="text-xs sm:text-sm font-medium truncate max-w-[150px] sm:max-w-[200px]">
                         {selectedFile.name}
                       </p>
-                      <p className="text-xs text-neutral-500">
+                      <p className="text-[10px] sm:text-xs text-neutral-500">
                         {formatFileSize(selectedFile.size)}
                       </p>
                     </div>
@@ -232,13 +236,17 @@ const AdminImportData = ({
               />
             </div>
           </div>
-          <DialogFooter>
+          <DialogFooter className="gap-2 sm:gap-0">
             <DialogClose asChild>
-              <Button variant="outline" type="button">
+              <Button variant="outline" type="button" className="w-full sm:w-auto">
                 Cancel
               </Button>
             </DialogClose>
-            <Button type="submit" disabled={isSubmitting || !selectedFile}>
+            <Button
+              type="submit"
+              disabled={isSubmitting || !selectedFile}
+              className="w-full sm:w-auto"
+            >
               {isSubmitting ? "Mengimport..." : "Import"}
             </Button>
           </DialogFooter>

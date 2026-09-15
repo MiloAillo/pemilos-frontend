@@ -175,22 +175,28 @@ const Dashboard = () => {
   };
 
   return (
-    <section className="space-y-8 relative">
+    <section className="space-y-6 md:space-y-8 relative">
       {/* Header Halaman - hidden in fullscreen */}
       {!isFullscreen && (
-        <h1 className="text-3xl font-bold tracking-tight text-white mb-8">Dashboard</h1>
+        <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-white mb-4 md:mb-8">
+          Dashboard
+        </h1>
       )}
 
       {/* Floating Fullscreen Button */}
       <button
         onClick={toggleFullscreen}
-        className="fixed bottom-0 right-8 z-50 p-4 bg-sky-500/20 hover:bg-sky-600/20 border-sky-100/10 border-2 backdrop-blur-[10px] text-white rounded-full shadow-2xl transition-all duration-200 hover:scale-110 active:scale-95"
+        className={
+          isFullscreen
+            ? "fixed bottom-4 right-4 md:bottom-0 md:right-8 z-50 p-3 md:p-4 bg-sky-500/20 hover:bg-sky-600/20 border-sky-100/10 border-2 backdrop-blur-[10px] text-white rounded-full shadow-2xl transition-all duration-200 hover:scale-110 active:scale-95"
+            : "fixed bottom-4 right-4 md:bottom-0 md:right-8 z-50 p-3 md:p-4 bg-sky-500/20 hover:bg-sky-600/20 border-sky-100/10 border-2 backdrop-blur-[10px] text-white rounded-full shadow-2xl transition-all duration-200 hover:scale-110 active:scale-95"
+        }
         title={isFullscreen ? "Keluar Fullscreen (ESC)" : "Masuk Fullscreen"}
       >
         {isFullscreen ? (
-          <Minimize2 size={24} strokeWidth={2.5} />
+          <Minimize2 size={20} strokeWidth={2.5} className="md:size-6" />
         ) : (
-          <Maximize2 size={24} strokeWidth={2.5} />
+          <Maximize2 size={20} strokeWidth={2.5} className="md:size-6" />
         )}
       </button>
 
@@ -204,7 +210,7 @@ const Dashboard = () => {
 
       {/* Live Count Voting */}
       <div className="space-y-4">
-        <div className="flex gap-4">
+        <div className="flex flex-col md:flex-row gap-4">
           <AdminChart 
             key={`osis-${isFullscreen}`}
             titleChart="OSIS" 
@@ -219,14 +225,16 @@ const Dashboard = () => {
 
         {/* Error banner untuk live count - muncul di bawah chart */}
         {isFetchVoteCountFailed && (
-          <div className="flex items-center gap-4 p-5 bg-yellow-500/15 border-2 border-yellow-500/30 rounded-xl">
-            <WifiOff className="text-yellow-400 flex-shrink-0" size={24} strokeWidth={2.5} />
-            <p className="text-yellow-100 text-sm font-semibold flex-1">
-              Gagal memuat data jumlah suara. Silakan periksa koneksi Anda.
-            </p>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 p-4 sm:p-5 bg-yellow-500/15 border-2 border-yellow-500/30 rounded-xl">
+            <div className="flex items-center gap-3 sm:gap-4 flex-1">
+              <WifiOff className="text-yellow-400 flex-shrink-0" size={22} strokeWidth={2.5} />
+              <p className="text-yellow-100 text-sm font-semibold flex-1">
+                Gagal memuat data jumlah suara. Silakan periksa koneksi Anda.
+              </p>
+            </div>
             <button
               onClick={fetchVoteCount}
-              className="flex items-center gap-2 px-4 py-2 text-sm font-bold bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300 rounded-lg transition-all duration-200 hover:scale-105 border border-yellow-500/40"
+              className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-bold bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300 rounded-lg transition-all duration-200 hover:scale-105 border border-yellow-500/40 w-full sm:w-auto"
               title="Coba lagi"
             >
               <RefreshCw size={16} strokeWidth={2.5} />
@@ -245,8 +253,8 @@ const Dashboard = () => {
 
       {/* Warning untuk Pusher env - muncul paling bawah karena mempengaruhi semua fitur real-time */}
       {!isPusherEnvFound && (
-        <div className="flex items-center gap-4 p-5 bg-red-500/15 border-2 border-red-500/30 rounded-xl">
-          <TriangleAlert className="text-red-400 flex-shrink-0" size={24} strokeWidth={2.5} />
+        <div className="flex items-start sm:items-center gap-3 sm:gap-4 p-4 sm:p-5 bg-red-500/15 border-2 border-red-500/30 rounded-xl">
+          <TriangleAlert className="text-red-400 flex-shrink-0 mt-0.5 sm:mt-0" size={22} strokeWidth={2.5} />
           <p className="text-red-100 text-sm font-semibold">
             Kredensial Pusher tidak ditemukan. Pembaruan data real-time dinonaktifkan. Silakan konfigurasikan environment variables dengan benar.
           </p>

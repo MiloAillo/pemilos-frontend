@@ -85,11 +85,11 @@ const VoterParticipation = ({
         // Normal state: tampilkan statistik
         <>
           {/* Progress bar dua warna dengan visual hierarchy yang kuat */}
-          <div className="w-full h-24 flex rounded-xl overflow-hidden border-2 border-white/10 shadow-lg">
+          <div className="w-full h-20 sm:h-24 flex rounded-xl overflow-hidden border-2 border-white/10 shadow-lg">
             {/* Bagian kiri: Sudah memilih (biru - matching chart colors) */}
             <div
               ref={votedRef}
-              className="bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center px-6 text-white transition-all duration-500 relative group"
+              className="bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center px-3 sm:px-6 text-white transition-all duration-500 relative group min-w-0"
               style={{ width: `${votedPercentage}%` }}
             >
               {/* Subtle glow effect on hover */}
@@ -101,12 +101,12 @@ const VoterParticipation = ({
                   showVotedText ? 'opacity-100' : 'opacity-0'
                 }`}
               >
-                <p className="text-xs font-semibold uppercase tracking-wider text-sky-100 mb-1 whitespace-nowrap">
+                <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-sky-100 mb-0.5 sm:mb-1 whitespace-nowrap">
                   Sudah Memilih
                 </p>
-                <p className="text-2xl font-bold text-white drop-shadow-lg whitespace-nowrap">
+                <p className="text-lg sm:text-2xl font-bold text-white drop-shadow-lg whitespace-nowrap">
                   {voterStats.voted}
-                  <span className="pl-  1 text-sm font-bold text-sky-50 mt-0.5 whitespace-nowrap">
+                  <span className="pl-1 text-xs sm:text-sm font-bold text-sky-50 whitespace-nowrap">
                     ({votedPercentage}%)
                   </span>
                 </p>
@@ -116,7 +116,7 @@ const VoterParticipation = ({
             {/* Bagian kanan: Belum memilih (abu-abu netral) */}
             <div
               ref={notVotedRef}
-              className="bg-gradient-to-br from-neutral-600/40 to-neutral-700/10 flex items-center justify-center px-6 text-white transition-all duration-500 relative group"
+              className="bg-gradient-to-br from-neutral-600/40 to-neutral-700/10 flex items-center justify-center px-3 sm:px-6 text-white transition-all duration-500 relative group min-w-0"
               style={{ width: `${notVotedPercentage}%` }}
             >
               {/* Subtle glow effect on hover */}
@@ -128,12 +128,12 @@ const VoterParticipation = ({
                   showNotVotedText ? 'opacity-100' : 'opacity-0'
                 }`}
               >
-                <p className="text-xs font-semibold uppercase tracking-wider text-slate-200 mb-1 whitespace-nowrap">
+                <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-slate-200 mb-0.5 sm:mb-1 whitespace-nowrap">
                   Belum Memilih
                 </p>
-                <p className="text-2xl font-bold text-white drop-shadow-lg whitespace-nowrap">
+                <p className="text-lg sm:text-2xl font-bold text-white drop-shadow-lg whitespace-nowrap">
                   {voterStats.notVoted}
-                  <span className="pl-1 text-sm font-bold text-slate-100 mt-0.5">
+                  <span className="pl-1 text-xs sm:text-sm font-bold text-slate-100 whitespace-nowrap">
                     ({notVotedPercentage}%)
                   </span>
                 </p>

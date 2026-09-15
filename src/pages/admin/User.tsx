@@ -1,5 +1,5 @@
 import AdminAddUser from "@/components/admin/AdminAddUser";
-import { columns } from "@/components/admin/AdminTabel";
+import { columns, renderUserCard } from "@/components/admin/AdminTabel";
 import { DataTable } from "@/components/DataTable";
 import { Button } from "@/components/ui/button";
 import type { UserType } from "@/schemas/user.schema";
@@ -54,12 +54,13 @@ const User = () => {
   }, [fetchData]);
 
   const memoizedColumns = useMemo(() => columns(fetchData), [fetchData]);
+  const memoizedCardRenderer = useMemo(() => renderUserCard(fetchData), [fetchData]);
 
   return (
     <section>
-      <div className="flex justify-between w-full">
+      <div className="flex flex-col gap-3 w-full md:flex-row md:justify-between md:items-center mb-2">
         <h1 className="text-2xl font-bold">User</h1>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {/* <Button onClick={() => (window.location.href = "/admin/gettoken")}>
             Download Token
           </Button> */}
@@ -84,6 +85,7 @@ const User = () => {
           isLoading={loading}
           onSearchChange={setSearch}
           onFilter={setFilter}
+          renderMobileCard={memoizedCardRenderer}
         />
       </div>
     </section>

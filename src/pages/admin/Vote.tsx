@@ -1,4 +1,4 @@
-import { columns } from "@/components/admin/AdminVote";
+import { columns, renderVoteCard } from "@/components/admin/AdminVote";
 import { DataTable } from "@/components/DataTable";
 import { apiUrl } from "@/lib/api";
 import type { IsVotedType, UserType } from "@/schemas/user.schema";
@@ -61,13 +61,14 @@ const fetchData = useCallback(async () => {
   }, [fetchData]);
 
   const memoizedColumns = useMemo(() => columns(fetchData), [fetchData]);
+  const memoizedCardRenderer = useMemo(() => renderVoteCard(fetchData), [fetchData]);
 
   return (
     <section>
       <h1 className="text-2xl font-bold">Suara</h1>
 
       <div className="grid gap-2 mt-4">
-        <div className="w-full px-2 py-2 rounded-xl border-2 text-center">
+        <div className="w-full px-3 py-2 sm:px-4 rounded-xl border-2 text-center text-xs sm:text-sm">
           Sudah Voting: {votedData.find((item) => item._id === true)?.count ?? 0}, Belum Voting: {votedData.find((item) => item._id === false)?.count ?? 0}
         </div>
         <DataTable
@@ -80,6 +81,7 @@ const fetchData = useCallback(async () => {
           onFilter={setFilter}
           isVote={true}
           onVoted={setVoted}
+          renderMobileCard={memoizedCardRenderer}
         />
       </div>
     </section>
