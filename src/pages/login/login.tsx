@@ -103,7 +103,11 @@ const Login = () => {
             </li>
             <li className="flex gap-2 text-xs text-amber-100/70">
               <span className="font-bold text-amber-200">3.</span>
-              Pilih 1 kandidat OSIS dan 1 kandidat MPK, konfirmasi, selesai
+              Baca detail tiap kandidat, lalu klik 'vote'
+            </li>
+            <li className="flex gap-2 text-xs text-amber-100/70">
+              <span className="font-bold text-amber-200">4.</span>
+              Pilih 1 kandidat OSIS dan 1 kandidat MPK, lalu klik 'kirim'
             </li>
           </ol>
 
