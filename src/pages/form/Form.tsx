@@ -220,8 +220,14 @@ const Form = () => {
         )}
 
         {success && (
-          <div className="fixed inset-0 bg-black/70 z-40 flex justify-center items-center p-5">
-            <div className="bg-[#1c1f2b] w-full max-w-lg max-h-[85vh] overflow-y-auto p-6 rounded-2xl border border-amber-200/25 flex flex-col items-center text-center gap-5 shadow-2xl">
+          <div
+            className={`fixed inset-0 bg-black/70 z-50 flex justify-center p-3 sm:p-5 transition-all duration-300 ${
+              isShrunk
+                ? "items-center pt-16 pb-4 overflow-y-auto"
+                : "items-center pt-44 md:pt-48 pb-4 overflow-y-auto"
+            }`}
+          >
+            <div className="bg-[#1c1f2b] w-full max-w-lg max-h-[85dvh] overflow-y-auto h-fit p-6 rounded-2xl border border-amber-200/25 flex flex-col items-center text-center gap-5 shadow-2xl">
               <span className="flex items-center justify-center w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-amber-300/15 border-2 border-amber-300">
                 <BadgeCheck
                   className="w-9 h-9 sm:w-[52px] sm:h-[52px] text-amber-300"
