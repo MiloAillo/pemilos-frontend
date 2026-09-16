@@ -13,7 +13,7 @@ const GetToken = () => {
     if (value) {
       try {
         const res = await axios.get(
-          `${apiUrl}/admin/user?kelas=${encodeURIComponent(value)}`,
+          `${apiUrl}/admin/user?class=${encodeURIComponent(value)}`,
           {
             headers: {
               "ngrok-skip-browser-warning": "true",

@@ -30,7 +30,7 @@ const User = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `${apiUrl}/admin/user?name=${search}&kelas=${filter}&role=${role}&page=${
+        `${apiUrl}/admin/user?name=${search}&class=${filter}&role=${role}&page=${
           page.pageIndex + 1
         }`,
         {

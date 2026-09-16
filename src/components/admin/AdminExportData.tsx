@@ -41,7 +41,7 @@ const AdminExportData = ({ children }: { children: React.ReactNode }) => {
 
     try {
       const response = await axios.get(
-        `${apiUrl}/admin/user?kelas=${encodeURIComponent(selectedClass)}`,
+        `${apiUrl}/admin/user?class=${encodeURIComponent(selectedClass)}`,
         {
           headers: {
             "ngrok-skip-browser-warning": "true",

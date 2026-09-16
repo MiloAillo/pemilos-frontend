@@ -22,7 +22,7 @@ const Vote = () => {
 const fetchData = useCallback(async () => {
   setLoading(true);
 
-  const url = `${apiUrl}/admin/user?isVoted=${voted}&name=${search}&filter=${filter}&role=${role}&page=${
+  const url = `${apiUrl}/admin/user?isVoted=${voted}&name=${search}&class=${filter}&role=${role}&page=${
           page.pageIndex + 1
         }`
   

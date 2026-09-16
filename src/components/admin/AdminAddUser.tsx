@@ -44,13 +44,13 @@ const AdminAddUser = ({
     const name = formData.get("name") as string;
     const username = formData.get("username") as string;
     const password = formData.get("password") as string;
-    const kelas = formData.get("kelas") as string;
+    const userClass = formData.get("class") as string;
 
     const data = {
       name,
       username,
       password,
-      kelas,
+      class: userClass,
       role: "voter",
     };
 
@@ -112,7 +112,7 @@ const AdminAddUser = ({
                   </SelectGroup>
                 </SelectContent>
               </Select>
-              <input type="hidden" name="kelas" value={kelas} />
+              <input type="hidden" name="class" value={kelas} />
             </div>
           </div>
           <DialogFooter className="gap-2 sm:gap-0">
