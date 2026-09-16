@@ -1,9 +1,9 @@
 import { Check } from "lucide-react";
 
 export function osisImage(number: number): string {
-  if (number === 1) return "Rafif-1-cUHUsNgs.png";
-  if (number === 2) return "Zahra-2-DLpGzRhv.png";
-  if (number === 3) return "Laily-3-B7kQfHLV.png";
+  if (number === 1) return "Aliya-1.png";
+  if (number === 2) return "Galuh-2.png";
+  if (number === 3) return "Ravidya-3.png";
   return "";
 }
 

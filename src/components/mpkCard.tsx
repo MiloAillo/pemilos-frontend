@@ -1,9 +1,9 @@
 import { Check } from "lucide-react";
 
 export function mpkImage(number: number): string {
-  if (number === 1) return "Alden-1-aF0LkwjD.png";
-  if (number === 2) return "Seva-2-CaMTsY6Q.png";
-  if (number === 3) return "Attaya-3-B4QiY6bf.png";
+  if (number === 1) return "Amelia-1.png";
+  if (number === 2) return "Raihan-2.png";
+  if (number === 3) return "Kynanti-3.png";
   return "";
 }
 
