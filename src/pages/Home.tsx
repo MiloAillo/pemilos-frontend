@@ -97,6 +97,11 @@ const CandidateCard = ({ data }: { data: DetailsType }) => {
               whileTap={{ scale: 0.95 }}
               transition={spring}
               className="relative my-8 mb-2"
+              data-guide={
+                data.organization === "OSIS" && data.number === 1
+                  ? "candidate-1-image"
+                  : undefined
+              }
             >
               <img
                 src={data.background}
@@ -130,6 +135,11 @@ const CandidateCard = ({ data }: { data: DetailsType }) => {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={spring}
+          data-guide={
+            data.organization === "OSIS" && data.number === 1
+              ? "osis-1-visi-misi"
+              : undefined
+          }
           className="bg-amber-800/20 backdrop-brightness-30 border border-amber-200/20 p-6 rounded-xl shadow-lg w-full max-w-96 flex flex-col gap-2"
         >
           <div className="flex justify-between items-center">
@@ -264,6 +274,7 @@ const Home = () => {
         {checked ? (
           <Link
             to="/form"
+            data-guide="nav-vote"
             className="rounded-full px-5 py-2 font-bodoni uppercase tracking-widest bg-amber-200 text-amber-950 hover:bg-amber-100 transition"
           >
             Vote
@@ -272,6 +283,7 @@ const Home = () => {
           <span
             aria-disabled="true"
             title="Voting belum dibuka"
+            data-guide="nav-vote-disabled"
             className="rounded-full px-5 py-2 font-bodoni uppercase tracking-widest bg-amber-200/30 text-amber-100/40 cursor-not-allowed select-none"
           >
             ...

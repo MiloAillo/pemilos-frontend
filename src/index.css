@@ -163,3 +163,71 @@ body {
     0 0 30px #72A6B777,
     0 0 30px #28315B77;
 }
+.voting-guide-popover.driver-popover {
+  background-color: #2a1a0a;
+  border: 1px solid rgb(253 230 138 / 0.25);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  max-width: 340px;
+  box-shadow: 0 10px 40px rgb(0 0 0 / 0.6);
+}
+
+.voting-guide-popover .driver-popover-arrow {
+  border-color: #2a1a0a;
+}
+
+.voting-guide-popover .driver-popover-title {
+  margin: 0;
+  font-family: var(--font-bodoni, serif);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #fef3c7;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding-right: 1.5rem;
+}
+
+.voting-guide-popover .driver-popover-description {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: rgb(255 255 255 / 0.75);
+}
+
+.voting-guide-popover .driver-popover-close-btn {
+  color: rgb(255 255 255 / 0.4);
+}
+
+.voting-guide-popover .driver-popover-close-btn:hover {
+  color: #fff;
+}
+
+.voting-guide-popover .driver-popover-progress-text {
+  color: rgb(255 255 255 / 0.4);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.voting-guide-popover .driver-popover-navigation-btns button {
+  all: unset;
+  cursor: pointer;
+  background-color: #fde68a;
+  color: #451a03;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.5rem 1.25rem;
+  transition: background-color 0.2s;
+}
+
+.voting-guide-popover .driver-popover-navigation-btns button:hover {
+  background-color: #fef3c7;
+}
+
+.voting-guide-popover .driver-popover-navigation-btns button.driver-popover-btn-disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}

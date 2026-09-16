@@ -260,7 +260,10 @@ const Form = () => {
             >
               OSIS
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 w-full">
+            <div
+              data-guide="section-osis"
+              className="grid grid-cols-1 sm:grid-cols-3 gap-5 w-full"
+            >
               {osisData.map((candidate) => (
                 <OsisCard
                   key={candidate._id}
@@ -278,7 +281,10 @@ const Form = () => {
             <h2 className="font-bodoni font-black text-2xl sm:text-3xl uppercase text-amber-200">
               MPK
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 w-full">
+            <div
+              data-guide="section-mpk"
+              className="grid grid-cols-1 sm:grid-cols-3 gap-5 w-full"
+            >
               {mpkData.map((candidate) => (
                 <MpkCard
                   key={candidate._id}
@@ -314,6 +320,7 @@ const Form = () => {
             onClick={() => {
               setConfirmation(true);
             }}
+            data-guide="submit-vote"
             className={`w-full h-11 sm:h-12 -mb-4 font-bodoni font-bold uppercase tracking-widest text-lg sm:text-xl rounded-full transition ${
               !osisValue || !mpkValue
                 ? "bg-amber-200/25 text-amber-100/40 cursor-not-allowed"
