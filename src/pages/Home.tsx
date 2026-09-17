@@ -44,7 +44,7 @@ const ListRow = ({
   >
     <span className="shrink-0 text-base leading-none">
       <motion.span
-        className="inline-block mt-1"
+        className="inline-block mt-1 text-3xl text-amber-200 mr-2"
         animate={{ rotate: [0, 18, -18, 0], scale: [1, 1.25, 1, 1] }}
         transition={{
           duration: 2,
@@ -53,7 +53,7 @@ const ListRow = ({
           delay: 0.1 * index,
         }}
       >
-        ⭐
+        𝄞
       </motion.span>
     </span>
     <p
