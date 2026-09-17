@@ -118,7 +118,7 @@ const CandidateCard = ({ data }: { data: DetailsType }) => {
               />
             </motion.div>
 
-            <h1 className="text-xl md:text-3xl font-bodoni font-extrabold p-2 text-center whitespace-nowrap uppercase text-amber-100">
+            <h1 className="text-xl md:text-3xl font-bodoni font-extrabold p-2 text-center uppercase text-amber-100">
               {data.name}
             </h1>
 
@@ -251,7 +251,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="w-screen min-h-screen p-7.5 font-sans text-white flex flex-col items-center text-xs md:text-sm gap-16 pb-32 pt-24">
+    <div className="w-screen min-h-screen p-7.5 font-sans text-white flex flex-col items-center justify-center text-xs md:text-sm gap-16 pb-32 pt-24">
       {showCurtainOpen && (
         <CurtainTransition mode="open" onClosed={handleCurtainOpenDone} />
       )}
