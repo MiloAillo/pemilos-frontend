@@ -9,8 +9,6 @@ import { Toaster } from "@/components/ui/sonner";
 import { Outlet, useLocation, useSearchParams } from "react-router-dom";
 import CurtainTransition from "@/components/CurtainTransition";
 import { ThemeProvider } from "@/components/ui/theme-provider";
-import { useKioskProtection } from "@/hooks/useKioskProtection";
-import KioskPinModal from "@/components/admin/KioskPinModal";
 
 const PAGE_TITLES: Record<string, string> = {
   "/admin": "Dashboard",
@@ -32,17 +30,8 @@ const AdminLayout = () => {
     PAGE_TITLES[basePath] ??
     (basePath.startsWith("/admin") ? "Admin" : "Admin");
 
-  const { showPinModal, deactivateKioskMode, cancelPinModal } = useKioskProtection();
-
   return (
     <ThemeProvider defaultTheme="dark" storageKey="admin-theme">
-      {/* Kiosk Protection Modal - blocks navigation when kiosk mode is active */}
-      <KioskPinModal
-        isOpen={showPinModal}
-        onCorrectPin={deactivateKioskMode}
-        onCancel={cancelPinModal}
-      />
-
       {showCurtainOpen && (
         <CurtainTransition mode="open" onClosed={() => setShowCurtainOpen(false)} />
       )}
