@@ -1,19 +1,25 @@
 import AdminChart from "@/components/admin/AdminChart";
 import DashboardHeader from "@/components/admin/DashboardHeader";
 import VoterParticipation from "@/components/admin/VoterParticipation";
+import KioskPinModal from "@/components/admin/KioskPinModal";
 import { useEffect, useState } from "react";
 import Pusher from "pusher-js";
 import type { CountArrayType } from "@/schemas/livecount.schema";
 import type { VoterStatsType } from "@/schemas/voterStats.schema";
 import axios from "axios";
 import { apiUrl } from "@/lib/api";
-import { RefreshCw, TriangleAlert, WifiOff, Maximize2, Minimize2 } from "lucide-react";
+import { RefreshCw, TriangleAlert, WifiOff, Maximize2, Minimize2, Lock, MonitorPlay } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useKioskProtection } from "@/hooks/useKioskProtection";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const isFullscreen = searchParams.get('fullscreen') === 'true';
+  const isKiosk = searchParams.get('kiosk') === 'true';
+  const { activateKioskMode, deactivateKioskMode } = useKioskProtection();
+  
+  const [showExitKioskModal, setShowExitKioskModal] = useState(false);
 
   // State untuk data live count (jumlah suara per kandidat)
   const [count, setCount] = useState<CountArrayType | null>(null);
@@ -155,27 +161,149 @@ const Dashboard = () => {
     };
   }, []);
 
-  // ESC key listener untuk keluar dari fullscreen
+  // ESC key listener untuk keluar dari fullscreen (disabled in kiosk mode)
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isFullscreen) {
-        navigate('/admin');
+        if (isKiosk) {
+          // In kiosk mode, ESC requires PIN
+          e.preventDefault();
+          setShowExitKioskModal(true);
+        } else {
+          // Normal fullscreen, ESC works normally
+          navigate('/admin');
+        }
       }
     };
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
-  }, [isFullscreen, navigate]);
+  }, [isFullscreen, isKiosk, navigate]);
+
+  // Disable right-click in kiosk mode
+  useEffect(() => {
+    if (isKiosk) {
+      const handleContextMenu = (e: MouseEvent) => {
+        e.preventDefault();
+      };
+      window.addEventListener('contextmenu', handleContextMenu);
+      return () => window.removeEventListener('contextmenu', handleContextMenu);
+    }
+  }, [isKiosk]);
+
+  // Block DevTools keyboard shortcuts in kiosk mode
+  useEffect(() => {
+    if (isKiosk) {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        // F12
+        if (e.key === 'F12') {
+          e.preventDefault();
+          setShowExitKioskModal(true);
+          return;
+        }
+        
+        // Ctrl+Shift+I (DevTools)
+        if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+          e.preventDefault();
+          setShowExitKioskModal(true);
+          return;
+        }
+        
+        // Ctrl+Shift+J (Console)
+        if (e.ctrlKey && e.shiftKey && e.key === 'J') {
+          e.preventDefault();
+          setShowExitKioskModal(true);
+          return;
+        }
+        
+        // Ctrl+Shift+C (Inspect Element)
+        if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+          e.preventDefault();
+          setShowExitKioskModal(true);
+          return;
+        }
+        
+        // Ctrl+U (View Source)
+        if (e.ctrlKey && e.key === 'u') {
+          e.preventDefault();
+          setShowExitKioskModal(true);
+          return;
+        }
+
+        // Ctrl+S (Save Page)
+        if (e.ctrlKey && e.key === 's') {
+          e.preventDefault();
+          return;
+        }
+      };
+      
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+    }
+  }, [isKiosk]);
+
+  // Detect DevTools opening via size detection in kiosk mode
+  useEffect(() => {
+    if (isKiosk) {
+      let devtoolsOpen = false;
+      
+      const detectDevTools = () => {
+        const widthThreshold = window.outerWidth - window.innerWidth > 160;
+        const heightThreshold = window.outerHeight - window.innerHeight > 160;
+        
+        if (widthThreshold || heightThreshold) {
+          if (!devtoolsOpen) {
+            devtoolsOpen = true;
+            setShowExitKioskModal(true);
+          }
+        } else {
+          devtoolsOpen = false;
+        }
+      };
+      
+      const interval = setInterval(detectDevTools, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [isKiosk]);
+
+  // Activate kiosk mode when kiosk param is present
+  useEffect(() => {
+    if (isKiosk) {
+      activateKioskMode();
+    }
+  }, [isKiosk, activateKioskMode]);
 
   const toggleFullscreen = () => {
     if (isFullscreen) {
-      navigate('/admin');
+      if (isKiosk) {
+        // Exit kiosk requires PIN
+        setShowExitKioskModal(true);
+      } else {
+        // Normal fullscreen exit
+        navigate('/admin');
+      }
     } else {
       navigate('/admin?fullscreen=true');
     }
   };
 
+  const enterKioskMode = () => {
+    navigate('/admin?fullscreen=true&kiosk=true');
+  };
+
+  const handleExitKiosk = () => {
+    setShowExitKioskModal(false);
+    deactivateKioskMode();
+  };
+
   return (
     <section className="space-y-6 md:space-y-8 relative">
+      {/* Kiosk Exit PIN Modal */}
+      <KioskPinModal
+        isOpen={showExitKioskModal}
+        onCorrectPin={handleExitKiosk}
+        onCancel={() => setShowExitKioskModal(false)}
+      />
+
       {/* Header Halaman - hidden in fullscreen */}
       {!isFullscreen && (
         <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-white mb-4 md:mb-8">
@@ -184,21 +312,51 @@ const Dashboard = () => {
       )}
 
       {/* Floating Fullscreen Button */}
-      <button
-        onClick={toggleFullscreen}
-        className={
-          isFullscreen
-            ? "fixed bottom-4 right-4 md:bottom-0 md:right-8 z-50 p-3 md:p-4 bg-sky-500/20 hover:bg-sky-600/20 border-sky-100/10 border-2 backdrop-blur-[10px] text-white rounded-full shadow-2xl transition-all duration-200 hover:scale-110 active:scale-95"
-            : "fixed bottom-4 right-4 md:bottom-0 md:right-8 z-50 p-3 md:p-4 bg-sky-500/20 hover:bg-sky-600/20 border-sky-100/10 border-2 backdrop-blur-[10px] text-white rounded-full shadow-2xl transition-all duration-200 hover:scale-110 active:scale-95"
-        }
-        title={isFullscreen ? "Keluar Fullscreen (ESC)" : "Masuk Fullscreen"}
-      >
-        {isFullscreen ? (
-          <Minimize2 size={20} strokeWidth={2.5} className="md:size-6" />
-        ) : (
-          <Maximize2 size={20} strokeWidth={2.5} className="md:size-6" />
-        )}
-      </button>
+      {!isKiosk && (
+        <button
+          onClick={toggleFullscreen}
+          className="fixed bottom-4 right-4 md:bottom-0 md:right-8 z-50 p-3 md:p-4 bg-sky-500/20 hover:bg-sky-600/20 border-sky-100/10 border-2 backdrop-blur-[10px] text-white rounded-full shadow-2xl transition-all duration-200 hover:scale-110 active:scale-95"
+          title={isFullscreen ? "Keluar Fullscreen (ESC)" : "Masuk Fullscreen"}
+        >
+          {isFullscreen ? (
+            <Minimize2 size={20} strokeWidth={2.5} className="md:size-6" />
+          ) : (
+            <Maximize2 size={20} strokeWidth={2.5} className="md:size-6" />
+          )}
+        </button>
+      )}
+
+      {/* Floating Kiosk Mode Button - only in fullscreen (not kiosk) */}
+      {isFullscreen && !isKiosk && (
+        <button
+          onClick={enterKioskMode}
+          className="fixed bottom-4 right-20 md:bottom-0 md:right-28 z-50 p-3 md:p-4 bg-purple-500/20 hover:bg-purple-600/20 border-purple-100/10 border-2 backdrop-blur-[10px] text-white rounded-full shadow-2xl transition-all duration-200 hover:scale-110 active:scale-95"
+          title="Aktifkan Mode Kiosk"
+        >
+          <MonitorPlay size={20} strokeWidth={2.5} className="md:size-6" />
+        </button>
+      )}
+
+      {/* Floating Lock Button - only in kiosk mode */}
+      {isKiosk && (
+        <button
+          onClick={() => setShowExitKioskModal(true)}
+          className="fixed bottom-4 right-4 md:bottom-0 md:right-8 z-50 p-3 md:p-4 bg-red-500/20 hover:bg-red-600/20 border-red-100/10 border-2 backdrop-blur-[10px] text-white rounded-full shadow-2xl transition-all duration-200 hover:scale-110 active:scale-95"
+          title="Keluar Mode Kiosk (Perlu PIN)"
+        >
+          <Lock size={20} strokeWidth={2.5} className="md:size-6" />
+        </button>
+      )}
+
+      {/* Kiosk Mode Indicator */}
+      {isKiosk && (
+        <div className="fixed top-4 right-4 z-40 px-4 py-2 bg-red-500/20 border-2 border-red-500/50 backdrop-blur-[10px] rounded-lg">
+          <p className="text-red-200 text-sm font-semibold flex items-center gap-2">
+            <Lock size={16} />
+            Mode Kiosk Aktif
+          </p>
+        </div>
+      )}
 
       {/* Jam Real-time & Status Voting */}
       <DashboardHeader
