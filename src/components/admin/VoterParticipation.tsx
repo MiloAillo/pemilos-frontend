@@ -24,12 +24,14 @@ const VoterParticipation = ({
   const [showNotVotedText, setShowNotVotedText] = useState(false);
 
   // Hitung persentase untuk progress bar
-  const votedPercentage = voterStats
-    ? Math.round((voterStats.voted / voterStats.total) * 100)
-    : 0;
-  const notVotedPercentage = voterStats
-    ? Math.round((voterStats.notVoted / voterStats.total) * 100)
-    : 0;
+  const votedPercentage =
+    voterStats && voterStats.total > 0
+      ? (voterStats.voted / voterStats.total) * 100
+      : 0;
+  const notVotedPercentage =
+    voterStats && voterStats.total > 0
+      ? (voterStats.notVoted / voterStats.total) * 100
+      : 0;
 
   useEffect(() => {
     const checkTextFit = () => {
@@ -107,7 +109,7 @@ const VoterParticipation = ({
                 <p className="text-lg sm:text-2xl font-bold text-white drop-shadow-lg whitespace-nowrap">
                   {voterStats.voted}
                   <span className="pl-1 text-xs sm:text-sm font-bold text-sky-50 whitespace-nowrap">
-                    ({votedPercentage}%)
+                    ({votedPercentage.toFixed(1)}%)
                   </span>
                 </p>
               </div>
@@ -134,7 +136,7 @@ const VoterParticipation = ({
                 <p className="text-lg sm:text-2xl font-bold text-white drop-shadow-lg whitespace-nowrap">
                   {voterStats.notVoted}
                   <span className="pl-1 text-xs sm:text-sm font-bold text-slate-100 whitespace-nowrap">
-                    ({notVotedPercentage}%)
+                    ({notVotedPercentage.toFixed(1)}%)
                   </span>
                 </p>
               </div>

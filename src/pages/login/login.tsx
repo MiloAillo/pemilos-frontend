@@ -14,6 +14,7 @@ const Login = () => {
   const [isCredentialWrong, setIsCredentialWrong] = useState<boolean>(false);
   const [isNotFilled, setIsNotFilled] = useState<boolean>(false);
   const [isVoted, setIsVoted] = useState<boolean>(false);
+  const [isUnknownError, setIsUnknownError] = useState<boolean>(false)
 
   const [username, setUsername] = useState<string>("");
   const [isClosing, setIsClosing] = useState<boolean>(false);
@@ -23,6 +24,7 @@ const Login = () => {
     setIsCredentialWrong(false);
     setIsNotFilled(false);
     setIsVoted(false);
+    setIsUnknownError(false)
   };
 
   const handleSubmit = async (e?: React.FormEvent) => {
@@ -46,9 +48,10 @@ const Login = () => {
       if (isAxiosError(err)) {
         if (err.response?.status == 401) {
           setIsVoted(true);
-        }
-        if (err.response?.status == 400) {
+        } else if (err.response?.status == 400) {
           setIsCredentialWrong(true);
+        } else {
+          setIsUnknownError(true)
         }
       }
     }
@@ -65,7 +68,7 @@ const Login = () => {
             try {
               const payload = JSON.parse(atob(token.split(".")[1]));
               const role = payload.role;
-              if (role === "admin") {
+              if (role?.toLowerCase() === "admin") {
                 navigate("/admin", { replace: true });
               } else {
                 navigate("/", { replace: true });
@@ -192,6 +195,21 @@ const Login = () => {
                 />
                 <p className="text-sm font-bold text-red-100">
                   Username dan token wajib diisi!
+                </p>
+              </div>
+            )}
+            {isUnknownError && (
+              <div
+                role="alert"
+                className="flex items-center gap-3 rounded-xl border-2 border-red-500/60 bg-red-500/15 p-4"
+              >
+                <TriangleAlert
+                  className="text-red-400 shrink-0"
+                  size={22}
+                  strokeWidth={2.5}
+                />
+                <p className="text-sm font-bold text-red-100">
+                  Periksa internet dan coba lagi
                 </p>
               </div>
             )}
