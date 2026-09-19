@@ -6,7 +6,7 @@ export const voteSummary: Record<string, string> = {
   "OSIS-3":
     "Fokus pada OSIS berlandaskan Pancasila dan AD/ART dengan karakter 5S. Program kunci: Kalender Event, Gerakan 5S Action, Ruang Kreasi Nusantara, dan Jejak Prestasi.",
   "MPK-1":
-    "Fokus pada MPK yang representatif, berbasis data aspirasi, dan terstruktur. Program kunci: Forum Perwakilan Kelas dan Kanal Lapor MPK.",
+    "Fokus pada MPK yang TERBUKA: terpercaya, responsif, dan terbuka dalam mengawal aspirasi. Program kunci: MPK Transparency and Digital Voice, Event Evaluation System, dan MPK Track.",
   "MPK-2":
     "Fokus pada nilai KITA yaitu kolaboratif, integritas, transparansi, dan aspirasi. Program kunci: Study Banding, ATLAS, dan Survei Pasca Acara.",
   "MPK-3":
