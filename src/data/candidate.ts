@@ -1,7 +1,7 @@
 import Aliya from "@/assets/Kandidat/Aliya-1.png";
 import Galuh from "@/assets/Kandidat/Galuh-2.png";
 import Ravidya from "@/assets/Kandidat/Ravidya-3.png";
-import Amelia from "@/assets/Kandidat/Amelia-1.png";
+import Alvino from "@/assets/Kandidat/Alvino-1.png";
 import Raihan from "@/assets/Kandidat/Raihan-2.png";
 import Kynanti from "@/assets/Kandidat/Kynanti-3.png";
 import type { DetailsType } from "@/schemas/details.schema";
@@ -11,22 +11,24 @@ import GenericBackground from "@/assets/CalonBack.png";
 export const MPK01Details: DetailsType = {
   number: 1,
   organization: "MPK",
-  name: "Amelia Septiana",
+  name: "Alvino Satrio Widigdo Hadikusuma",
 
   background: GenericBackground,
-  images: [Amelia],
+  images: ["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="], // transparent 1x1
 
   vision:
-    "Mewujudkan MPK yang representatif berbasis data aspirasi, adil dalam penilaian, serta terstruktur dalam sistem kerja.",
+    "Mewujudkan MPK yang “TERBUKA”  Terpercaya, Responsif, dan Terbuka dalam mengawal aspirasi, mengembangkan sistem organisasi, serta membangun komunikasi.",
   mission: [
-    "Mengawal aspirasi siswa secara terstruktur hingga memperoleh kepastian status tindak lanjut dan kejelasan keputusan dari sekolah",
-    "Membangun komunikasi dua arah yang aktif antara siswa, perwakilan kelas, dan pihak sekolah melalui forum berkala dan media informasi terbuka",
-    "Memperkuat tata kelola internal MPK melalui evaluasi kinerja anggota yang terukur serta pengarsipan kerja yang transparan",
+    "Membangun sistem aspirasi yang terbuka dan bertanggung jawab atas semua aspirasi.",
+    "Meningkatkan transparansi dalam kinerja MPK.",
+    "Memperkuat komunikasi antara siswa, MPK, OSIS, dan sekolah.",
+    "Menjaga dan mengembangkan program kerja yang telah berjalan melalui evaluasi, inovasi, dan dokumentasi."
   ],
 
   programs: [
-    "Forum Perwakilan Kelas (FPK) <br/> Forum diskusi berkala antara MPK dan perwakilan kelas untuk membahas isu kolektif, dengan pendataan awal di tiap kelas agar aspirasi yang dibawa murni mewakili suara kelas",
-    "Kanal Lapor MPK <br/> Wadah aduan harian berbasis digital yang dapat diakses siswa untuk menampung laporan serta memberikan pembaruan status tindak lanjut secara berkala dan terukur",
+    "MPK Transparency and Digital Voice <br/> Membuka perkembangan kinerja aspirasi MPK yang sudah terkumpul serta pengoptimalan media sosial MPK agar menjadi jauh lebih aktif.",
+    "Event Evaluation System <br/> Sistem pengembangan dari Survey Pasca Acara dengan MPK sebagai pemberi saran pada kegiatan suatu event.",
+    "MPK Track <br/> MPK yang menyediakan sistem aspirasi baru melalui penyebaran pada daerah tertentu di dalam SMK Negeri 8 Semarang."
   ],
 };
 

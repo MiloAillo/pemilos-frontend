@@ -311,7 +311,7 @@ const Home = () => {
           title="Kandidat MPK"
           subtitle="Scroll kebawah untuk melihat kandidat"
         />
-        {mpkCandidates.map((data) => (data.number == 1 ? null : 
+        {mpkCandidates.map((data) => (
           <CandidateCard
             key={`${data.organization}-${data.number}`}
             data={data}
