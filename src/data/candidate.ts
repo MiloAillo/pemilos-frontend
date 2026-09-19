@@ -1,7 +1,6 @@
 import Aliya from "@/assets/Kandidat/Aliya-1.png";
 import Galuh from "@/assets/Kandidat/Galuh-2.png";
 import Ravidya from "@/assets/Kandidat/Ravidya-3.png";
-import Alvino from "@/assets/Kandidat/Alvino-1.png";
 import Raihan from "@/assets/Kandidat/Raihan-2.png";
 import Kynanti from "@/assets/Kandidat/Kynanti-3.png";
 import type { DetailsType } from "@/schemas/details.schema";
