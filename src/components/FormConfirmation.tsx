@@ -17,8 +17,10 @@ interface ConfirmationProps {
   isSent: boolean;
   isVoteNotAllowed: boolean;
   isNotAuthorized: boolean;
+  isRateLimited: boolean;
   submitError: string | null;
   isTopBarShrunk?: boolean;
+  onLogout?: () => void;
 }
 
 const SummaryRow = ({ candidate }: { candidate: SelectedCandidate }) => (
@@ -56,8 +58,10 @@ const Confirmation = ({
   isSent,
   isVoteNotAllowed,
   isNotAuthorized,
+  isRateLimited,
   submitError,
   isTopBarShrunk = false,
+  onLogout,
 }: ConfirmationProps) => {
   return (
     <div
@@ -89,7 +93,7 @@ const Confirmation = ({
           {mpk && <SummaryRow candidate={mpk} />}
         </div>
 
-        {(isVoteNotAllowed || isNotAuthorized || submitError) && (
+        {(isVoteNotAllowed || isNotAuthorized || isRateLimited || submitError) && (
           <div
             role="alert"
             className="flex items-start gap-3 rounded-xl border-2 border-red-500/60 bg-red-500/15 p-4"
@@ -102,8 +106,17 @@ const Confirmation = ({
             <div className="text-sm font-semibold text-red-100">
               {isVoteNotAllowed && <p>Tidak diperbolehkan untuk vote.</p>}
               {isNotAuthorized && (
-                <p>Token tidak valid, silakan login ulang.</p>
+                <p>
+                  Token tidak valid, silakan login ulang.{" "}
+                  <button
+                    onClick={onLogout}
+                    className="underline underline-offset-2 hover:text-red-50 transition"
+                  >
+                    Logout
+                  </button>
+                </p>
               )}
+              {isRateLimited && <p>Jaringan terbebani, mohon ganti jaringan anda</p>}
               {submitError && <p>{submitError}</p>}
             </div>
           </div>

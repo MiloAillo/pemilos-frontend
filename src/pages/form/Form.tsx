@@ -31,6 +31,7 @@ const Form = () => {
   const [isSent, setIsSent] = useState<boolean>(false);
   const [isVoteNotAllowed, setIsVoteNotAllowed] = useState<boolean>(false);
   const [isNotAuthorized, setIsNotAuthorized] = useState<boolean>(false);
+  const [isRateLimited, setIsRateLimited] = useState<boolean>(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
   const [isShrunk, setIsShrunk] = useState<boolean>(false);
@@ -107,6 +108,7 @@ const Form = () => {
     }
     setIsVoteNotAllowed(false);
     setIsNotAuthorized(false);
+    setIsRateLimited(false);
     setSubmitError(null);
     try {
       setIsSent(true);
@@ -132,6 +134,7 @@ const Form = () => {
       if (isAxiosError(err)) {
         if (err.response?.status === 401) setIsVoteNotAllowed(true);
         else if (err.response?.status === 400) setIsNotAuthorized(true);
+        else if (err.code === "ERR_NETWORK" || err.response?.status === 429) setIsRateLimited(true);
         else setSubmitError("Gagal mengirim suara. Periksa koneksi lalu coba lagi.");
       } else {
         setSubmitError("Gagal mengirim suara. Periksa koneksi lalu coba lagi.");
@@ -214,8 +217,10 @@ const Form = () => {
             isSent={isSent}
             isVoteNotAllowed={isVoteNotAllowed}
             isNotAuthorized={isNotAuthorized}
+            isRateLimited={isRateLimited}
             submitError={submitError}
             isTopBarShrunk={isShrunk}
+            onLogout={handleLogout}
           />
         )}
 
