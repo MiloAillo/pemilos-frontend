@@ -5,6 +5,51 @@ import CurtainTransition from "@/components/CurtainTransition";
 import ParallaxBackground from "@/components/ParallaxBackground";
 import { TriangleAlert } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "motion/react";
+
+// Theatrical spinner component inspired by curtain rings
+const CurtainSpinner = () => {
+  return (
+    <div className="inline-flex items-center justify-center" aria-hidden="true">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <motion.circle
+          cx="10"
+          cy="10"
+          r="7"
+          stroke="#fde68a"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeDasharray="32 12"
+          fill="none"
+          animate={{ rotate: 360 }}
+          transition={{
+            duration: 0.8,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+          style={{ originX: "50%", originY: "50%" }}
+        />
+        <motion.circle
+          cx="10"
+          cy="10"
+          r="4"
+          stroke="#fef3c7"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeDasharray="16 8"
+          fill="none"
+          animate={{ rotate: -360 }}
+          transition={{
+            duration: 1.2,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+          style={{ originX: "50%", originY: "50%" }}
+        />
+      </svg>
+    </div>
+  );
+};
 
 const Login = () => {
   const navigate = useNavigate();
@@ -19,6 +64,7 @@ const Login = () => {
 
   const [username, setUsername] = useState<string>("");
   const [isClosing, setIsClosing] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [token, setToken] = useState<string>("");
 
   const removeWarning = () => {
@@ -36,6 +82,9 @@ const Login = () => {
       setIsNotFilled(true);
       return;
     }
+    
+    setIsLoading(true);
+    
     try {
       const response = await axios.post(`${apiUrl}/auth/login`, {
         username: usernameRef.current?.value,
@@ -60,6 +109,8 @@ const Login = () => {
           setIsUnknownError(true)
         }
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -251,14 +302,22 @@ const Login = () => {
             )}
             <button
               type="submit"
-              disabled={isClosing}
-              className={`w-full h-11 rounded-full font-bodoni font-bold uppercase tracking-widest transition ${
-                isClosing
-                  ? "bg-amber-200/25 text-amber-100/40 cursor-not-allowed"
+              disabled={isClosing || isLoading}
+              aria-busy={isLoading}
+              className={`w-full h-11 rounded-full font-bodoni font-bold uppercase tracking-widest transition flex items-center justify-center gap-2 ${
+                isClosing || isLoading
+                  ? "bg-amber-200/90 text-amber-950/70 cursor-not-allowed"
                   : "bg-amber-200 text-amber-950 hover:bg-amber-100"
               }`}
             >
-              Masuk
+              {isLoading ? (
+                <>
+                  <CurtainSpinner />
+                  <span>Memuat...</span>
+                </>
+              ) : (
+                "Masuk"
+              )}
             </button>
           </div>
         </form>
