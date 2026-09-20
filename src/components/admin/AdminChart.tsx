@@ -113,7 +113,7 @@ const AdminChart = ({
                   border: {
                     display: false,
                   },
-                  grace: "5%",
+                  grace: "15%",
                 },
               },
             }}
