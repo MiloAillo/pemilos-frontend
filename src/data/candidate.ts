@@ -1,6 +1,7 @@
 import Aliya from "@/assets/Kandidat/Aliya-1.png";
 import Galuh from "@/assets/Kandidat/Galuh-2.png";
 import Ravidya from "@/assets/Kandidat/Ravidya-3.png";
+import Alvino from "@/assets/Kandidat/Alvino-1.png";
 import Raihan from "@/assets/Kandidat/Raihan-2.png";
 import Kynanti from "@/assets/Kandidat/Kynanti-3.png";
 import type { DetailsType } from "@/schemas/details.schema";
@@ -13,7 +14,7 @@ export const MPK01Details: DetailsType = {
   name: "Alvino Satrio Widigdo Hadikusuma",
 
   background: GenericBackground,
-  images: ["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="], // transparent 1x1
+  images: [Alvino],
 
   vision:
     "Mewujudkan MPK yang “TERBUKA”  Terpercaya, Responsif, dan Terbuka dalam mengawal aspirasi, mengembangkan sistem organisasi, serta membangun komunikasi.",
