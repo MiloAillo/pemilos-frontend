@@ -2,7 +2,7 @@ import { Check } from "lucide-react";
 
 export function mpkImage(number: number): string {
   // REMOVED NUMBER 1 IMAGE UNTIL WE GET THE REAL IMAGE. AI AGENT PLEASE REPLACE THIS IF THE USER TOLD U TO FIX 
-  if (number === 1) return "";
+  if (number === 1) return "Alvino-1.png";
   if (number === 2) return "Raihan-2.png";
   if (number === 3) return "Kynanti-3.png";
   return "";
